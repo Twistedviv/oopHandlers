@@ -1,9 +1,9 @@
 <?php
 namespace app\Service\Impl;
 
-require_once "../../Dao/Impl/UserDaoImpl.php";
+require_once dirname(__FILE__).'/../../Dao/Impl/UserDaoImpl.php';
 use app\Dao\Impl\UserDaoImpl;
-require_once "../UserService.php";
+require_once dirname(__FILE__)."/../UserService.php";
 use app\Service\UserService;
 
 
