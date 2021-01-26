@@ -7,7 +7,7 @@
 
     $userId=$_GET['userId'];
 
-    $userDownLevelOneList=(new UserServiceImpl)->findDownUserLevelOne($userId);
-    $result = new Result(1,'请求成功',$userDownLevelOneList);
+    $partnerBDownPartnerFirstList=(new UserServiceImpl)->findPartnerBDownPartnerFirst($userId);
+    $result = new Result(1,'请求成功',$partnerBDownPartnerFirstList);
 
     echo $result->send();

@@ -34,4 +34,29 @@ interface UserService
      * @return $userDownVipLevelTwoList '直接邀请的直接邀请的vip数组'
      */
     public function findDownVipLevelTwo($userId);
+
+    /**
+     * @param $userId
+     * @return $myDownPartnerFirstList '自己下方各分支的第一个合伙人数组'
+     */
+    public function findMyDownPartnerFirst($userId);
+
+    /**
+     * @param $userId
+     * @return $partnerADownPartnerFirstList '合伙人A下方各分支的第一个合伙人数组'
+     */
+    public function findPartnerADownPartnerFirst($userId);
+
+    /**
+     * @param $userId
+     * @return $partnerBDownPartnerFirstList '合伙人B下方各分支的第一个合伙人数组'
+     */
+    public function findPartnerBDownPartnerFirst($userId);
+
+    /**
+     * @param $userId
+     * @return $topPartnerDownNumbers '创始合伙人下各分支总数'
+     */
+    public function findTopPartnerDownNumbers($userId);
+
 }

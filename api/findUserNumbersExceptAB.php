@@ -1,24 +1,23 @@
 <?php
-    require_once "../Service/Impl/UserServiceImpl.php";
+    require_once dirname(__FILE__)."/../Service/Impl/UserServiceImpl.php";
     require_once "../Common/Result.php";
 
     use app\Common\Result;
-use app\Dao\Impl\UserDaoImpl;
+    use app\Service\Impl\UserServiceImpl;
 
     $userId=$_GET['userId'];
 
     //总数
-    $userNumbers=(new UserDaoImpl)->findUserNumbers($userId);
-    $total=$userNumbers[0]['invite_num'];
-    //echo $userNumbers[0]['invite_num']."  ";
+    $total=(new UserServiceImpl)->findUserNumbers($userId);
+    //echo $total;
 
     //粉丝A数
-    $userDownLevelOneList=(new UserDaoImpl)->findDownUserLevelOne($userId);
+    $userDownLevelOneList=(new UserServiceImpl)->findDownUserLevelOne($userId);
     $A_total=count($userDownLevelOneList);
     //echo count($userDownLevelOneList)." ";
 
     //粉丝B数
-    $userDownLevelTwoList=(new UserDaoImpl)->findDownUserLevelTwo($userId);
+    $userDownLevelTwoList=(new UserServiceImpl)->findDownUserLevelTwo($userId);
     $B_tatal=count($userDownLevelTwoList);
     //echo count($userDownLevelTwoList);
 

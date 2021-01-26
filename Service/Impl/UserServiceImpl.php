@@ -35,7 +35,8 @@ class UserServiceImpl implements UserService
      */
     public function findUserNumbers($userId){
         $userNumbers=(new UserDaoImpl())->findUserNumbers($userId);
-        return $userNumbers;
+        $total=$userNumbers[0]['invite_num'];
+        return $total;
     }
 
     /**
@@ -54,5 +55,42 @@ class UserServiceImpl implements UserService
     public function findDownVipLevelTwo($userId){
         $userDownLevelTwoVipList=(new UserDaoImpl())->findDownVipLevelTwo($userId);
         return $userDownLevelTwoVipList;
+    }
+
+    /**
+     * @param $userId
+     * @return $myDownPartnerFirstList '自己下方各分支的第一个合伙人数组'
+     */
+    public function findMyDownPartnerFirst($userId){
+        $myDownPartnerFirstList=(new UserDaoImpl())->findMyDownPartnerFirst($userId);
+        return $myDownPartnerFirstList;
+    }
+
+    /**
+     * @param $userId
+     * @return $partnerADownPartnerFirstList '合伙人A下方各分支的第一个合伙人数组'
+     */
+    public function findPartnerADownPartnerFirst($userId){
+        $partnerADownPartnerFirstList=(new UserDaoImpl())->findPartnerADownPartnerFirst($userId);
+        return $partnerADownPartnerFirstList;
+    }
+
+    /**
+     * @param $userId
+     * @return $partnerADownPartnerFirstList '合伙人B下方各分支的第一个合伙人数组'
+     */
+    public function findPartnerBDownPartnerFirst($userId){
+        $partnerBDownPartnerFirstList=(new UserDaoImpl())->findPartnerBDownPartnerFirst($userId);
+        return $partnerBDownPartnerFirstList;
+    }
+
+    /**
+     * @param $userId
+     * @return $topPartnerDownNumbers '创始合伙人下各分支总数'
+     */
+    public function findTopPartnerDownNumbers($userId){
+        $topPartnerDownNumbersList=(new UserDaoImpl())->findTopPartnerDownNumbersList($userId);
+        $topPartnerDownNumbers=count($topPartnerDownNumbersList);
+        return $topPartnerDownNumbers;
     }
 }

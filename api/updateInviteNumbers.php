@@ -3,10 +3,11 @@
     use app\Common\DB;
 
     //将invite_num清零
-//    $sql="UPDATE ums_user SET invite_num=0";
-//    $db = new DB();
-//    $rs=$db ->execUpdate($sql);
+    $sql="UPDATE ums_user SET invite_num=0";
+    $db = new DB();
+    $rs=$db ->execUpdate($sql);
 
+    //统计以自己为根的人的总数更改数据库的值
     $sql1="select * from ums_user";
     $db = new DB();
     $res=$db ->execQuery($sql1);
