@@ -7,7 +7,7 @@
 
     $userId=$_GET['userId'];
 
-    $userList=(new UserDaoImpl)->findDownUserLevelOne($userId);
-    $result = new Result(1,'请求成功',$userList);
+    $userDownLevelOneList=(new UserDaoImpl)->findDownUserLevelOne($userId);
+    $result = new Result(1,'请求成功',$userDownLevelOneList);
 
     echo $result->send();
