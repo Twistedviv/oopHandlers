@@ -93,4 +93,6 @@ class UserServiceImpl implements UserService
         $topPartnerDownNumbers=count($topPartnerDownNumbersList);
         return $topPartnerDownNumbers;
     }
+
+
 }

@@ -1,0 +1,109 @@
+<?php
+
+namespace app\Dao\Impl;
+
+require_once dirname(__FILE__).'/../../Common/DB.php';
+use app\Common\DB;
+
+class VideoDaoImpl
+{
+    /**
+     * @param $userId
+     * @retrun $userNameAndHeadimage 包含用户名及头像的数组
+     */
+    public function findUserNameAndHeadimage($userId){
+        $sql="select uname,headimage_url from ums_user where $userId=id";
+        $db = new DB();
+        $userNameAndHeadimage=$db ->execQuery($sql);
+        return $userNameAndHeadimage;
+    }
+
+
+    /**
+     * @param $userId
+     * @param $userNameAndHeadimage
+     * @param $cover
+     * @param $video
+     * @param $label
+     * @param $description
+     * @param $isPrivate
+     * @return $res 实现插入
+     */
+    public function insertVideo($userId, $userNameAndHeadimage, $cover, $video, $label, $description, $isPrivate){
+        $userName=$userNameAndHeadimage[0]['uname'];
+        $Headimage=$userNameAndHeadimage[0]['headimage_url'];
+        //echo "\r\n".$userName.$Headimage."\r\n";
+        $sql="insert into cms_video(video_url,video_poster_url,video_desc,user_id,user_uname,user_headimage_url,
+              product_id,video_spec,video_tag,is_private) values ('$video','$cover','$description','$userId','$userName',
+              '$Headimage','0','2','$label','$isPrivate')";
+        $db = new DB();
+        $res=$db ->execUpdate($sql);
+        return $res;
+    }
+
+    /**
+     * @param $userId
+     * @return $videoList 视频列表
+     */
+    public function getVideoList($userId){
+        $sql="select id,video_desc,create_time,video_poster_url from cms_video where $userId=user_id";
+        $db = new DB();
+        $videoList=$db ->execQuery($sql);
+        return $videoList;
+    }
+
+    /**
+     * @param $userId
+     * @return $videoIdAndDesc 视频id和描述
+     */
+    public function getVideoIdAndDesc($userId){
+        $sql="select id,video_desc from cms_video where $userId=user_id";
+        $db = new DB();
+        $videoList=$db ->execQuery($sql);
+        return $videoList;
+    }
+
+    /**
+     * @param $videoId
+     * @return $videoUpList 视频点赞数组
+     */
+    public function getVideoUpList($videoId){
+        $sql="select * from cms_video_up where $videoId=video_id";
+        $db = new DB();
+        $videoUpList=$db ->execQuery($sql);
+        return $videoUpList;
+    }
+
+    /**
+     * @param $videoId
+     * @return $videoLikeList 视频收藏数组
+     */
+    public function getVideoLikeList($videoId){
+        $sql="select * from cms_video_like where $videoId=video_id";
+        $db = new DB();
+        $videoLikeList=$db ->execQuery($sql);
+        return $videoLikeList;
+    }
+
+    /**
+     * @param $videoId
+     * @return $videoReplyList 视频评论数组
+     */
+    public function getVideoReplyList($videoId){
+        $sql="select * from cms_video_reply where $videoId=video_id";
+        $db = new DB();
+        $videoReplyList=$db ->execQuery($sql);
+        return $videoReplyList;
+    }
+
+    /**
+     * @param $videoId
+     * @return $videoShareList 视频分享数组
+     */
+    public function getVideoShareList($videoId){
+        $sql="select * from cms_video_share where $videoId=video_id";
+        $db = new DB();
+        $videoShareList=$db ->execQuery($sql);
+        return $videoShareList;
+    }
+}
