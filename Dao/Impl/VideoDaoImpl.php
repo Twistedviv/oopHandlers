@@ -46,7 +46,7 @@ class VideoDaoImpl
      * @return $videoList 视频列表
      */
     public function getVideoList($userId){
-        $sql="select id,video_desc,create_time,video_poster_url from cms_video where $userId=user_id";
+        $sql="select id,video_desc,SUBSTRING(create_time,1,10) create_time,video_poster_url from cms_video where $userId=user_id";
         $db = new DB();
         $videoList=$db ->execQuery($sql);
         return $videoList;
@@ -54,10 +54,10 @@ class VideoDaoImpl
 
     /**
      * @param $userId
-     * @return $videoIdAndDesc 视频id和描述
+     * @return $videoIdAndDescAndCreatetime 视频id和描述和上传时间
      */
-    public function getVideoIdAndDesc($userId){
-        $sql="select id,video_desc from cms_video where $userId=user_id";
+    public function getVideoIdAndDescAndCreatetime($userId){
+        $sql="select id,video_desc,SUBSTRING(create_time,1,10) create_time from cms_video where $userId=user_id";
         $db = new DB();
         $videoList=$db ->execQuery($sql);
         return $videoList;

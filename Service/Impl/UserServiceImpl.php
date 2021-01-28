@@ -11,12 +11,23 @@ use app\Service\UserService;
 
 class UserServiceImpl implements UserService
 {
+
+//    /**
+//     * @param $userPartArrayList '部分用户属性'
+//     * return $userPartArrayList '更新时间后的数据'
+//     */
+//    public function updateTimeUser($userPartArrayList){
+//        print_r($userPartArrayList);
+//        $numbers=count($userPartArrayList);
+//        return $userPartArrayList;
+//    }
     /**
      * @param $userId
      * @return $userDownLevelOneList '直接邀请的用户数组'
      */
     public function findDownUserLevelOne($userId){
         $userDownLevelOneList=(new UserDaoImpl())->findDownUserLevelOne($userId);
+        //$userDownLevelOneList=(new UserServiceImpl())->updateTimeUser($userDownLevelOneList);
         return $userDownLevelOneList;
     }
 

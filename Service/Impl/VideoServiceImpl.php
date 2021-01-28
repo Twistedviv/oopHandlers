@@ -44,11 +44,11 @@ class VideoServiceImpl implements VideoService
 
     /**
      * @param $userId
-     * @return $videoIdAndDesc 视频id和描述
+     * @return $videoIdAndDescAndCreatetime 视频id和描述
      */
-    public function getVideoIdAndDesc($userId){
-        $videoIdAndDesc=(new VideoDaoImpl())->getVideoIdAndDesc($userId);
-        return $videoIdAndDesc;
+    public function getVideoIdAndDescAndCreatetime($userId){
+        $videoIdAndDescAndCreatetime=(new VideoDaoImpl())->getVideoIdAndDescAndCreatetime($userId);
+        return $videoIdAndDescAndCreatetime;
     }
 
     /**

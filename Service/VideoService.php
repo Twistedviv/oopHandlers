@@ -32,9 +32,9 @@ interface VideoService
 
     /**
      * @param $userId
-     * @return $videoIdAndDesc 视频id和描述
+     * @return $videoIdAndDescAndCreatetime 视频id和描述和上传时间
      */
-    public function getVideoIdAndDesc($userId);
+    public function getVideoIdAndDescAndCreatetime($userId);
 
     /**
      * @param $userId
