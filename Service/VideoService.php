@@ -37,25 +37,25 @@ interface VideoService
     public function getVideoIdAndDescAndCreatetime($userId);
 
     /**
-     * @param $userId
+     * @param $videoId
      * @return $videoUpNumbers 视频点赞数
      */
     public function getVideoUpNumbers($videoId);
 
     /**
-     * @param $userId
+     * @param $videoId
      * @return $videoLikeNumbers 视频收藏数
      */
     public function getVideoLikeNumbers($videoId);
 
     /**
-     * @param $userId
+     * @param $videoId
      * @return $videoReplyNumbers 视频评论数
      */
     public function getVideoReplyNumbers($videoId);
 
     /**
-     * @param $userId
+     * @param $videoId
      * @return $videoShareNumbers 视频分享数
      */
     public function getVideoShareNumbers($videoId);
@@ -65,4 +65,16 @@ interface VideoService
      * @return $videoMessage'视频信息'
      */
     public function getVideoMessageByVideoId($videoId);
+
+    /**
+     * @param $videoId
+     * @return $res 更改video表delete字段值为1
+     */
+    public function deleteVideoByVideoId($videoId);
+
+    /**
+     * @param $videoId,$poster,$desc,$tag,$isPrivate
+     * @return $res 编辑视频信息:封面 描述 标签 公开性
+     */
+    public function updateVideoMessageByVideoId($videoId,$poster,$desc,$tag,$isPrivate);
 }

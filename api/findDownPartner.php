@@ -6,23 +6,30 @@
     use app\Service\Impl\UserServiceImpl;
 
     $userId=$_GET['userId'];
+
+    //myDownPartnerFirstList
+    $myDownPartnerFirstList=(new UserServiceImpl)->findMyDownPartnerFirst($userId);
+
+    //partnerADownPartnerFirstList
+    $partnerADownPartnerFirstList=(new UserServiceImpl)->findPartnerADownPartnerFirst($userId);
+
+    //partnerBDownPartnerFirstList
+    $partnerBDownPartnerFirstList=(new UserServiceImpl)->findPartnerBDownPartnerFirst($userId);
+
+    //threeFloorPartnerNumbers
     //总数
     $findTopPartnerDownNumbers=(new UserServiceImpl)->findTopPartnerDownNumbers($userId);
-
     //my down numbers
     $myDownPartnerFirstList=(new UserServiceImpl)->findMyDownPartnerFirst($userId);
     $mydownnumbers=count($myDownPartnerFirstList);
-    //echo $mydownnumbers." ";
-
     //partnerA down numbers
     $partnerADownPartnerFirstList=(new UserServiceImpl)->findPartnerADownPartnerFirst($userId);
     $partnerAdownnumbers=count($partnerADownPartnerFirstList);
-    //echo $partnerAdownnumbers." ";
     //partnerB down numbers
     $partnerBDownPartnerFirstList=(new UserServiceImpl)->findPartnerBDownPartnerFirst($userId);
     $partnerBdownnumbers=count($partnerBDownPartnerFirstList);
-    //echo $partnerBdownnumbers." ";
 
-    $threeFloorPartnerNumbers=$findTopPartnerDownNumbers-$mydownnumbers-$partnerAdownnumbers-$partnerBdownnumbers;
-    $result = new Result(1,'请求成功',$threeFloorPartnerNumbers);
+    $partner=array('myDownPartnerFirstList'=>$myDownPartnerFirstList,'partnerADownPartnerFirstList'=>$partnerADownPartnerFirstList,
+                'partnerBDownPartnerFirstList'=>$partnerBDownPartnerFirstList,'partnerBdownnumbers'=>$partnerBdownnumbers);
+    $result = new Result(1,'请求成功',$partner);
     echo $result->send();

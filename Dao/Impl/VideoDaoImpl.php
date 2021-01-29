@@ -46,7 +46,7 @@ class VideoDaoImpl
      * @return $videoList 视频列表
      */
     public function getVideoListByUserId($userId){
-        $sql="select id,video_desc,SUBSTRING(create_time,1,10) create_time,video_poster_url,is_private from cms_video where $userId=user_id";
+        $sql="select id,video_desc,SUBSTRING(create_time,1,10) create_time,video_poster_url,is_private from cms_video where $userId=user_id and delete_status=0";
         $db = new DB();
         $videoList=$db ->execQuery($sql);
         return $videoList;
@@ -57,7 +57,7 @@ class VideoDaoImpl
      * @return $videoMessage '视频信息'
      */
     public function getVideoMessageByVideoId($videoId){
-        $sql="select video_tag,video_desc,video_poster_url,is_private from cms_video where $videoId=id";
+        $sql="select video_tag,video_desc,video_poster_url,is_private from cms_video where $videoId=id and delete_status=0";
         $db = new DB();
         $videoMessage=$db ->execQuery($sql);
         return $videoMessage;
@@ -116,5 +116,27 @@ class VideoDaoImpl
         $db = new DB();
         $videoShareList=$db ->execQuery($sql);
         return $videoShareList;
+    }
+
+    /**
+     * @param $videoId
+     * @return $res 更改video表delete字段值为1 updateVideoMessageByVideoId
+     */
+    public function deleteVideoByVideoId($videoId){
+        $sql="UPDATE cms_video SET delete_status=1 where $videoId=id";
+        $db = new DB();
+        $res=$db ->execUpdate($sql);
+        return $res;
+    }
+
+    /**
+     * @param $videoId,$poster,$desc,$tag,$isPrivate
+     * @return $res 编辑视频信息 封面 描述 标签 公开性
+     */
+    public function updateVideoMessageByVideoId($videoId,$poster,$desc,$tag,$isPrivate){
+        $sql="UPDATE cms_video SET video_poster_url= '$poster',video_desc= '$desc',video_tag= '$tag',is_private= '$isPrivate' where $videoId=id";
+        $db = new DB();
+        $res=$db ->execUpdate($sql);
+        return $res;
     }
 }

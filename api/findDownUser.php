@@ -7,23 +7,24 @@
 
     $userId=$_GET['userId'];
 
+    //levelOneA
+    $userDownLevelOneList=(new UserServiceImpl)->findDownUserLevelOne($userId);
+
+    //levelTwoB
+    $userDownLevelTwoList=(new UserServiceImpl)->findDownUserLevelTwo($userId);
+
+    //计算userNumbersExceptAB
     //总数
     $total=(new UserServiceImpl)->findUserNumbers($userId);
-    //echo $total;
-
     //粉丝A数
     $userDownLevelOneList=(new UserServiceImpl)->findDownUserLevelOne($userId);
     $A_total=count($userDownLevelOneList);
-    //echo count($userDownLevelOneList)." ";
-
     //粉丝B数
     $userDownLevelTwoList=(new UserServiceImpl)->findDownUserLevelTwo($userId);
     $B_tatal=count($userDownLevelTwoList);
-    //echo count($userDownLevelTwoList);
-
     //总数-粉丝A数-粉丝B数
     $userNumbersExceptAB=$total-$A_total-$B_tatal;
-    //echo $userNumbersExceptAB;
 
-    $result = new Result(1,'请求成功', $userNumbersExceptAB);
+    $userDownList=array('levelOneA'=>$userDownLevelOneList,'levelTwoB'=>$userDownLevelTwoList,'userNumbersExceptAB'=>$userNumbersExceptAB);
+    $result = new Result(1,'请求成功',$userDownList);
     echo $result->send();

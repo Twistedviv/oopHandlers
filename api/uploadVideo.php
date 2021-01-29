@@ -49,6 +49,6 @@
     if($error==0){
         $userNameAndHeadimage=(new VideoServiceImpl)->findUserNameAndHeadimage($userId);
         $res=(new VideoServiceImpl)->insertVideo($userId, $userNameAndHeadimage, $cover, $video, $label, $description, $isPrivate);
-        $result = new Result(1,'操作成功',"1");
+        $result = new Result(1,'上传成功',"1");
         echo $result->send();
     }

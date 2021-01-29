@@ -91,7 +91,7 @@ class VideoServiceImpl implements VideoService
     }
 
     /**
-     * @param $userId
+     * @param $videoId
      * @return $videoShareNumbers 视频分享数
      */
     public function getVideoShareNumbers($videoId){
@@ -100,5 +100,22 @@ class VideoServiceImpl implements VideoService
         return $videoShareNumbers;
     }
 
+    /**
+     * @param $videoId
+     * @return $res 更改video表delete字段值为1
+     */
+    public function deleteVideoByVideoId($videoId){
+        $res=(new VideoDaoImpl())->deleteVideoByVideoId($videoId);
+        return $res;
+    }
+
+    /**
+     * @param $videoId,$poster,$desc,$tag,$isPrivate
+     * @return $res 编辑视频信息 封面 描述 标签 公开性
+     */
+    public function updateVideoMessageByVideoId($videoId,$poster,$desc,$tag,$isPrivate){
+        $res=(new VideoDaoImpl())->updateVideoMessageByVideoId($videoId,$poster,$desc,$tag,$isPrivate);
+        return $res;
+    }
 
 }
