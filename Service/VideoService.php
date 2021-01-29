@@ -28,7 +28,7 @@ interface VideoService
      * @param $userId
      * @return $videoList 视频列表
      */
-    public function getVideoList($userId);
+    public function getVideoListByUserId($userId);
 
     /**
      * @param $userId
@@ -59,4 +59,10 @@ interface VideoService
      * @return $videoShareNumbers 视频分享数
      */
     public function getVideoShareNumbers($videoId);
+
+    /**
+     * @param $videoId '视频id'
+     * @return $videoMessage'视频信息'
+     */
+    public function getVideoMessageByVideoId($videoId);
 }

@@ -5,7 +5,7 @@
     use app\Common\Result;
     use app\Service\Impl\VideoServiceImpl;
 
-    $userId=$_GET['userId'];
-    $videoList=(new VideoServiceImpl)->getVideoList($userId);
+    $videoId=$_GET['videoId'];
+    $videoList=(new VideoServiceImpl)->getVideoMessageByVideoId($videoId);
     $result = new Result(1,'请求成功',$videoList);
     echo $result->send();

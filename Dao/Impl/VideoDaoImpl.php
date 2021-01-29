@@ -45,11 +45,22 @@ class VideoDaoImpl
      * @param $userId
      * @return $videoList 视频列表
      */
-    public function getVideoList($userId){
-        $sql="select id,video_desc,SUBSTRING(create_time,1,10) create_time,video_poster_url from cms_video where $userId=user_id";
+    public function getVideoListByUserId($userId){
+        $sql="select id,video_desc,SUBSTRING(create_time,1,10) create_time,video_poster_url,is_private from cms_video where $userId=user_id";
         $db = new DB();
         $videoList=$db ->execQuery($sql);
         return $videoList;
+    }
+
+    /**
+     * @param $videoId '视频id'
+     * @return $videoMessage '视频信息'
+     */
+    public function getVideoMessageByVideoId($videoId){
+        $sql="select video_tag,video_desc,video_poster_url,is_private from cms_video where $videoId=id";
+        $db = new DB();
+        $videoMessage=$db ->execQuery($sql);
+        return $videoMessage;
     }
 
     /**

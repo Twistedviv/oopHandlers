@@ -37,9 +37,18 @@ class VideoServiceImpl implements VideoService
      * @param $userId
      * @return $videoList 视频列表
      */
-    public function getVideoList($userId){
-        $videoList=(new VideoDaoImpl())->getVideoList($userId);
+    public function getVideoListByUserId($userId){
+        $videoList=(new VideoDaoImpl())->getVideoListByUserId($userId);
         return $videoList;
+    }
+
+    /**
+     * @param $videoId '视频id'
+     * @return $videoMessage '视频信息'
+     */
+    public function getVideoMessageByVideoId($videoId){
+        $videoMessage=(new VideoDaoImpl())->getVideoMessageByVideoId($videoId);
+        return $videoMessage;
     }
 
     /**
@@ -90,4 +99,6 @@ class VideoServiceImpl implements VideoService
         $videoShareNumbers=count($videoShare);
         return $videoShareNumbers;
     }
+
+
 }
