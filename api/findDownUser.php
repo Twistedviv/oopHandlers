@@ -25,6 +25,6 @@
     //总数-粉丝A数-粉丝B数
     $userNumbersExceptAB=$total-$A_total-$B_tatal;
 
-    $userDownList=array('levelOneA'=>$userDownLevelOneList,'levelTwoB'=>$userDownLevelTwoList,'userNumbersExceptAB'=>$userNumbersExceptAB);
+    $userDownList=array('levelA'=>$userDownLevelOneList,'levelB'=>$userDownLevelTwoList,'more'=>$userNumbersExceptAB);
     $result = new Result(1,'请求成功',$userDownList);
     echo $result->send();

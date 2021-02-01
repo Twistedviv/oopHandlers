@@ -13,6 +13,6 @@
     //userDownLevelTwoVipList
     $userDownLevelTwoVipList=(new UserServiceImpl)->findDownVipLevelTwo($userId);
 
-    $userDownVipList=array('userDownLevelOneVipList'=>$userDownLevelOneVipList,'userDownLevelTwoVipList'=>$userDownLevelTwoVipList);
+    $userDownVipList=array('levelA'=>$userDownLevelOneVipList,'levelB'=>$userDownLevelTwoVipList);
     $result = new Result(1,'请求成功',$userDownVipList);
     echo $result->send();

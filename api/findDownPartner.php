@@ -29,7 +29,7 @@
     $partnerBDownPartnerFirstList=(new UserServiceImpl)->findPartnerBDownPartnerFirst($userId);
     $partnerBdownnumbers=count($partnerBDownPartnerFirstList);
 
-    $partner=array('myDownPartnerFirstList'=>$myDownPartnerFirstList,'partnerADownPartnerFirstList'=>$partnerADownPartnerFirstList,
-                'partnerBDownPartnerFirstList'=>$partnerBDownPartnerFirstList,'partnerBdownnumbers'=>$partnerBdownnumbers);
+    $partner=array('levelA'=>$myDownPartnerFirstList,'levelB'=>$partnerADownPartnerFirstList,
+                'levelC'=>$partnerBDownPartnerFirstList,'more'=>$partnerBdownnumbers);
     $result = new Result(1,'请求成功',$partner);
     echo $result->send();

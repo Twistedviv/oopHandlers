@@ -68,7 +68,7 @@ class VideoDaoImpl
      * @return $videoIdAndDescAndCreatetime 视频id和描述和上传时间
      */
     public function getVideoIdAndDescAndCreatetime($userId){
-        $sql="select id,video_desc,SUBSTRING(create_time,1,10) create_time from cms_video where $userId=user_id";
+        $sql="select id,video_desc,SUBSTRING(create_time,1,10) create_time from cms_video where $userId=user_id and delete_status = 0";
         $db = new DB();
         $videoList=$db ->execQuery($sql);
         return $videoList;

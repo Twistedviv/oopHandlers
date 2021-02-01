@@ -22,7 +22,7 @@ interface UserDao
      */
     public function getInvitePeoPleListByUid($uid,$situation);
 
-    public function
+
 
 
 }

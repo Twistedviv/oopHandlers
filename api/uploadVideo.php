@@ -1,9 +1,11 @@
 <?php
     require_once dirname(__FILE__)."/../Service/Impl/VideoServiceImpl.php";
     require_once "../Common/Result.php";
+    require_once("../Common/Common.php");
 
     use app\Common\Result;
     use app\Service\Impl\VideoServiceImpl;
+    use app\Common\Common;
 
     $userId=$_POST['uid'];                          //uid
     $coverName=$_FILES['coverFile']['name'];        //封面
@@ -26,8 +28,8 @@
     $error=0;               //定义错误变量
 
     //上传封面
-    if(move_uploaded_file($covertmp,dirname(__FILE__).'/../../video/'.$coverName)){
-        $cover='http://api.equnshang.com/video/'.$coverName; //封面最后所在位置
+    if(move_uploaded_file($covertmp,dirname(__FILE__).'/../../video/'.$userId.'_'.$coverName)){
+        $cover=Common::API_URL.'/video/'.$userId.'_'.$coverName; //封面最后所在位置
     }
     else{
         $data_cover="错误信息: ".$_FILES['coverFile']['error'];
@@ -37,8 +39,8 @@
     }
 
     //上传视频
-    if(move_uploaded_file($videotmp,dirname(__FILE__).'/../../video/'.$videoName)){
-        $video='http://api.equnshang.com/video/'.$videoName; //视频最后所在位置
+    if(move_uploaded_file($videotmp,dirname(__FILE__).'/../../video/'.$userId.'_'.$videoName)){
+        $video=Common::API_URL.'/video/'.$userId.'_'.$videoName; //视频最后所在位置
     }
     else{
         $data_video="错误信息: ".$_FILES['videoFile']['error'];

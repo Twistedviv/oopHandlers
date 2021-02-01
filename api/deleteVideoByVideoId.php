@@ -5,7 +5,7 @@
     use app\Common\Result;
     use app\Service\Impl\VideoServiceImpl;
 
-    $videoId=$_GET['videoId'];
+    $videoId=$_POST['videoId'];
     $videoList=(new VideoServiceImpl)->deleteVideoByVideoId($videoId);
     $result = new Result(1,'删除成功',1);
     echo $result->send();
