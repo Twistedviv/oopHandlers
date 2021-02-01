@@ -7,15 +7,15 @@ namespace app\Common;
 class DB
 {
     //服务器地址
-    private $serverName = '106.14.206.115';
+    private $serverName = '39.105.58.2';
     //数据库用户名
-    private $userName = 'db_qunshang';
+    private $userName = 'apitest';
     //数据库密码
-    private $password = 'Kh@szas6rxwbZjzf';
+    private $password = 'apitest';
     //数据库名称
-    private $dbName = 'db_qunshang';
+    private $dbName = 'apitest';
     //数据库端口号
-    private $port = 9851;
+    private $port = 3306;
     //数据库字符集
     private $charset = "utf8mb4";
     //数据库资源符

@@ -18,6 +18,7 @@ class UserServiceImpl implements UserService
      */
     public function findDownUserLevelOne($userId){
         $userDownLevelOneList=(new UserDaoImpl())->findDownUserLevelOne($userId);
+        $userDownLevelOneList=(new UserDaoImpl())->encapUserMessageList($userDownLevelOneList);
         return $userDownLevelOneList;
     }
 
@@ -27,6 +28,7 @@ class UserServiceImpl implements UserService
      */
     public function findDownUserLevelTwo($userId){
         $userDownLevelTwoList=(new UserDaoImpl())->findDownUserLevelTwo($userId);
+        $userDownLevelTwoList=(new UserDaoImpl())->encapUserMessageList($userDownLevelTwoList);
         return $userDownLevelTwoList;
     }
 
@@ -46,6 +48,7 @@ class UserServiceImpl implements UserService
      */
     public function findDownVipLevelOne($userId){
         $userDownLevelOneVipList=(new UserDaoImpl())->findDownVipLevelOne($userId);
+        $userDownLevelOneVipList=(new UserDaoImpl())->encapUserMessageList($userDownLevelOneVipList);
         return $userDownLevelOneVipList;
     }
 
@@ -55,6 +58,7 @@ class UserServiceImpl implements UserService
      */
     public function findDownVipLevelTwo($userId){
         $userDownLevelTwoVipList=(new UserDaoImpl())->findDownVipLevelTwo($userId);
+        $userDownLevelTwoVipList=(new UserDaoImpl())->encapUserMessageList($userDownLevelTwoVipList);
         return $userDownLevelTwoVipList;
     }
 
@@ -64,6 +68,7 @@ class UserServiceImpl implements UserService
      */
     public function findMyDownPartnerFirst($userId){
         $myDownPartnerFirstList=(new UserDaoImpl())->findMyDownPartnerFirst($userId);
+        $myDownPartnerFirstList=(new UserDaoImpl())->encapUserMessageList($myDownPartnerFirstList);
         return $myDownPartnerFirstList;
     }
 
@@ -73,6 +78,7 @@ class UserServiceImpl implements UserService
      */
     public function findPartnerADownPartnerFirst($userId){
         $partnerADownPartnerFirstList=(new UserDaoImpl())->findPartnerADownPartnerFirst($userId);
+        $partnerADownPartnerFirstList=(new UserDaoImpl())->encapUserMessageList($partnerADownPartnerFirstList);
         return $partnerADownPartnerFirstList;
     }
 
@@ -82,6 +88,7 @@ class UserServiceImpl implements UserService
      */
     public function findPartnerBDownPartnerFirst($userId){
         $partnerBDownPartnerFirstList=(new UserDaoImpl())->findPartnerBDownPartnerFirst($userId);
+        $partnerBDownPartnerFirstList=(new UserDaoImpl())->encapUserMessageList($partnerBDownPartnerFirstList);
         return $partnerBDownPartnerFirstList;
     }
 
