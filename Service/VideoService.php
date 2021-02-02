@@ -26,45 +26,46 @@ interface VideoService
 
     /**
      * @param $userId
-     * @return $videoList 视频列表
+     * @return $videoList 视频
      */
-    public function getVideoListByUserId($userId);
+    public function findVideoByUserId($userId);
+
+    /**
+     * @param $videoId '视频id'
+     * @return $videoMessage '视频信息'
+     */
+    public function findVideoByVideoId($videoId);
 
     /**
      * @param $userId
      * @return $videoIdAndDescAndCreatetime 视频id和描述和上传时间
      */
-    public function getVideoIdAndDescAndCreatetime($userId);
+    public function findVideoIdAndDescAndCreatetime($userId);
 
     /**
      * @param $videoId
      * @return $videoUpNumbers 视频点赞数
      */
-    public function getVideoUpNumbers($videoId);
+    public function findVideoUpNumbers($videoId);
 
     /**
      * @param $videoId
      * @return $videoLikeNumbers 视频收藏数
      */
-    public function getVideoLikeNumbers($videoId);
+    public function findVideoLikeNumbers($videoId);
 
     /**
      * @param $videoId
      * @return $videoReplyNumbers 视频评论数
      */
-    public function getVideoReplyNumbers($videoId);
+    public function findVideoReplyNumbers($videoId);
 
     /**
      * @param $videoId
      * @return $videoShareNumbers 视频分享数
      */
-    public function getVideoShareNumbers($videoId);
+    public function findVideoShareNumbers($videoId);
 
-    /**
-     * @param $videoId '视频id'
-     * @return $videoMessage'视频信息'
-     */
-    public function getVideoMessageByVideoId($videoId);
 
     /**
      * @param $videoId

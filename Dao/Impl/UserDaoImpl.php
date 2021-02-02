@@ -18,43 +18,34 @@ class UserDaoImpl
         return $realList;
     }
 
-    /**
-     * @param $userId
-     * @return $realName 用户真实姓名
-     */
-    public function findRealNameByUserId($userId){
-        $realList=(new UserDaoImpl())->findRealMessage($userId);
-        if(!empty($realList)){
-            $realName=array('name'=>$realList[0]['name']);
-        }
-        else{
-            $realName=array('name'=>'null');
-        }
-        return $realName;
+    public function findUserByUserId($userId){
+        $sql="select * from ums_user where id=$userId";
+        $db = new DB();
+        $userList=$db ->execQuery($sql);
+        return $userList;
     }
+
 
     /**SUBSTRING(create_time, 3)
      * @param $userId
      * @return $userDownLevelOneList '直接邀请的用户数组'
      */
-    public function findDownUserLevelOne($userId){
-        $sql="select id,headimage_url,utel,SUBSTRING(create_time,1,10) create_time from ums_user where id in (
-            select user_id from ums_invite where ums_invite.up_user_id_1 = $userId)";
+    public function findDownUserLevelOneIdByUserId($userId){
+        $sql="select user_id from ums_invite where ums_invite.up_user_id_1 = $userId";
         $db = new DB();
-        $userDownLevelOneList=$db ->execQuery($sql);
-        return $userDownLevelOneList;
+        $userIdList=($db ->execQuery($sql));
+        return $userIdList;
     }
 
     /**
      * @param $userId
      * @return $userDownLevelTwoList '直接邀请的直接邀请的用户数组'
      */
-    public function findDownUserLevelTwo($userId){
-        $sql="select id,headimage_url,utel,SUBSTRING(create_time,1,10) create_time from ums_user where id in (
-            select user_id from ums_invite where ums_invite.up_user_id_2 = $userId)";
+    public function findDownUserLevelTwoIdByUserId($userId){
+        $sql="select user_id from ums_invite where ums_invite.up_user_id_2 = $userId";
         $db = new DB();
-        $userDownLevelTwoList=$db ->execQuery($sql);
-        return $userDownLevelTwoList;
+        $userIdList=$db ->execQuery($sql);
+        return $userIdList;
     }
 
     /**
@@ -70,62 +61,59 @@ class UserDaoImpl
 
     /**
      * @param $userId
-     * @return $userDownLevelOneVipList '以自己为根的总数 数组'
+     * @return $userDownLevelOneVipList
      */
-    public function findDownVipLevelOne($userId){
-        $sql="select id,headimage_url,utel,SUBSTRING(create_time,1,10) create_time from ums_user where is_vip <> 0 and id in (
+    public function findDownVipLevelOneIdByUserId($userId){
+        $sql="select id from ums_user where is_vip <> 0 and id in (
             select user_id from ums_invite where ums_invite.up_user_id_1 = $userId)";
         $db = new DB();
-        $userDownLevelOneVipList=$db ->execQuery($sql);
-        return $userDownLevelOneVipList;
+        $userIdList=$db ->execQuery($sql);
+        return $userIdList;
     }
 
     /**
      * @param $userId
-     * @return $userDownLevelTwoVipList '以自己为根的总数 数组'
+     * @return $userDownLevelTwoVipList
      */
-    public function findDownVipLevelTwo($userId){
-        $sql="select id,headimage_url,utel,SUBSTRING(create_time,1,10) create_time from ums_user where is_vip <> 0 and id in (
+    public function findDownVipLevelTwoIdByUserId($userId){
+        $sql="select id from ums_user where is_vip <> 0 and id in (
             select user_id from ums_invite where ums_invite.up_user_id_2 = $userId)";
         $db = new DB();
-        $userDownLevelTwoVipList=$db ->execQuery($sql);
-        return $userDownLevelTwoVipList;
+        $userIdList=$db ->execQuery($sql);
+        return $userIdList;
     }
 
     /**
      * @param $userId
      * @return $myDownPartnerFirstList '自己下方各分支的第一个合伙人数组'
      */
-    public function findMyDownPartnerFirst($userId){
-        $sql="select id,headimage_url,utel,SUBSTRING(create_time,1,10) create_time from ums_user where id in (
-            select user_id from ums_partner where uppartner_id_1 = $userId)";
+    public function findMyDownPartnerFirstIdList($userId){
+        $sql="select user_id from ums_partner where uppartner_id_1 = $userId";
         $db = new DB();
-        $myDownPartnerFirstList=$db ->execQuery($sql);
-        return $myDownPartnerFirstList;
+        $userIdList=$db ->execQuery($sql);
+        return $userIdList;
     }
 
     /**
      * @param $userId
      * @return $partnerADownPartnerFirstList '合伙人A下方各分支的第一个合伙人数组'
      */
-    public function findPartnerADownPartnerFirst($userId){
-        $sql="select id,headimage_url,utel,SUBSTRING(create_time,1,10) create_time from ums_user where id in (
-            select user_id from ums_partner where uppartner_id_2 = $userId)";
+    public function findPartnerADownPartnerFirstIdList($userId){
+        $sql="select user_id from ums_partner where uppartner_id_2 = $userId";
         $db = new DB();
-        $partnerADownPartnerFirstList=$db ->execQuery($sql);
-        return $partnerADownPartnerFirstList;
+        $userIdList=$db ->execQuery($sql);
+        return $userIdList;
     }
 
     /**
      * @param $userId
      * @return $partnerBDownPartnerFirstList '合伙人B下方各分支的第一个合伙人数组'
      */
-    public function findPartnerBDownPartnerFirst($userId){
-        $sql="select id,headimage_url,utel,SUBSTRING(create_time,1,10) create_time from ums_user where id in (
-            select user_id from ums_partner where uppartner_id_3 = $userId)";
+    public function findPartnerBDownPartnerFirstIdList($userId){
+        $sql="select user_id from ums_partner where uppartner_id_3 = $userId";
         $db = new DB();
-        $partnerBDownPartnerFirstList=$db ->execQuery($sql);
-        return $partnerBDownPartnerFirstList;
+        $userIdList=$db ->execQuery($sql);
+        return $userIdList;
     }
 
     /**
@@ -139,17 +127,5 @@ class UserDaoImpl
         return $topPartnerDownNumbersList;
     }
 
-    /**
-     * @param $userMessageList
-     * @return $userMessageList 封装用户id 头像 电话 上传时间 真实用户名
-     */
-    public function encapUserMessageList($userMessageList){
-        $length=count($userMessageList);
-        for($i=0;$i<$length;$i++){
-            $id=$userMessageList[$i]['id'];
-            $userRealName=(new UserDaoImpl())->findRealNameByUserId($id);
-            $userMessageList[$i]=array_merge($userMessageList[$i],$userRealName);
-        }
-        return $userMessageList;
-    }
+
 }

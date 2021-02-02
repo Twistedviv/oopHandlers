@@ -35,10 +35,10 @@ class VideoServiceImpl implements VideoService
 
     /**
      * @param $userId
-     * @return $videoList 视频列表
+     * @return $videoList 视频
      */
-    public function getVideoListByUserId($userId){
-        $videoList=(new VideoDaoImpl())->getVideoListByUserId($userId);
+    public function findVideoByUserId($userId){
+        $videoList=(new VideoDaoImpl())->findVideoByUserId($userId);
         return $videoList;
     }
 
@@ -46,8 +46,8 @@ class VideoServiceImpl implements VideoService
      * @param $videoId '视频id'
      * @return $videoMessage '视频信息'
      */
-    public function getVideoMessageByVideoId($videoId){
-        $videoMessage=(new VideoDaoImpl())->getVideoMessageByVideoId($videoId);
+    public function findVideoByVideoId($videoId){
+        $videoMessage=(new VideoDaoImpl())->findVideoByVideoId($videoId);
         return $videoMessage;
     }
 
@@ -55,8 +55,8 @@ class VideoServiceImpl implements VideoService
      * @param $userId
      * @return $videoIdAndDescAndCreatetime 视频id和描述
      */
-    public function getVideoIdAndDescAndCreatetime($userId){
-        $videoIdAndDescAndCreatetime=(new VideoDaoImpl())->getVideoIdAndDescAndCreatetime($userId);
+    public function findVideoIdAndDescAndCreatetime($userId){
+        $videoIdAndDescAndCreatetime=(new VideoDaoImpl())->findVideoIdAndDescAndCreatetime($userId);
         return $videoIdAndDescAndCreatetime;
     }
 
@@ -64,8 +64,8 @@ class VideoServiceImpl implements VideoService
      * @param $userId
      * @return $videoUpNumbers 视频点赞数
      */
-    public function getVideoUpNumbers($videoId){
-        $videoUp=(new VideoDaoImpl())->getVideoUpList($videoId);
+    public function findVideoUpNumbers($videoId){
+        $videoUp=(new VideoDaoImpl())->findVideoUpList($videoId);
         $videoUpNumbers=count($videoUp);
         return $videoUpNumbers;
     }
@@ -74,8 +74,8 @@ class VideoServiceImpl implements VideoService
      * @param $userId
      * @return $videoLikeNumbers 视频收藏数
      */
-    public function getVideoLikeNumbers($videoId){
-        $videoLike=(new VideoDaoImpl())->getVideoLikeList($videoId);
+    public function findVideoLikeNumbers($videoId){
+        $videoLike=(new VideoDaoImpl())->findVideoLikeList($videoId);
         $videoLikeNumbers=count($videoLike);
         return $videoLikeNumbers;
     }
@@ -84,8 +84,8 @@ class VideoServiceImpl implements VideoService
      * @param $userId
      * @return $videoReplyNumbers 视频评论数
      */
-    public function getVideoReplyNumbers($videoId){
-        $videoReply=(new VideoDaoImpl())->getVideoReplyList($videoId);
+    public function findVideoReplyNumbers($videoId){
+        $videoReply=(new VideoDaoImpl())->findVideoReplyList($videoId);
         $videoReplyNumbers=count($videoReply);
         return $videoReplyNumbers;
     }
@@ -94,8 +94,8 @@ class VideoServiceImpl implements VideoService
      * @param $videoId
      * @return $videoShareNumbers 视频分享数
      */
-    public function getVideoShareNumbers($videoId){
-        $videoShare=(new VideoDaoImpl())->getVideoShareList($videoId);
+    public function findVideoShareNumbers($videoId){
+        $videoShare=(new VideoDaoImpl())->findVideoShareList($videoId);
         $videoShareNumbers=count($videoShare);
         return $videoShareNumbers;
     }

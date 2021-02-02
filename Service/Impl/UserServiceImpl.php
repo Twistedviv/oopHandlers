@@ -13,12 +13,39 @@ class UserServiceImpl implements UserService
 {
 
     /**
+     * @param $idList 'id数组'
+     * @return $userList '封装用户id 头像 电话 上传时间 真实用户名'
+     */
+    public function encapUserList($idList){
+        $userList=null;
+        for($i=0;$i<count($idList);$i++){
+            //取得每一个id
+            $id=$idList[$i]['user_id'];
+            //获得user(*)
+            $user=(new UserDaoImpl())->findUserByUserId($id);
+            //获得用户名
+            $real=(new UserDaoImpl())->findRealMessage($id);
+            if(!empty($real)){
+                $realName=$real[0]['name'];
+            }
+            else{
+                $realName=$user[0]['uname'];
+            }
+            //封装所需数组
+            $userModel=array('id'=>$user[0]['id'],'name'=>$realName,'headimage_url'=>$user[0]['headimage_url'],'utel'=>$user[0]['utel'],
+                'create_time'=>substr($user[0]['create_time'] , 0 , 10));
+            $userList[$i]=$userModel;
+        }
+        return $userList;
+    }
+
+    /**
      * @param $userId
      * @return $userDownLevelOneList '直接邀请的用户数组'
      */
     public function findDownUserLevelOne($userId){
-        $userDownLevelOneList=(new UserDaoImpl())->findDownUserLevelOne($userId);
-        $userDownLevelOneList=(new UserDaoImpl())->encapUserMessageList($userDownLevelOneList);
+        $userDownLevelOneIdList=(new UserDaoImpl())->findDownUserLevelOneIdByUserId($userId);
+        $userDownLevelOneList=(new UserServiceImpl())->encapUserList($userDownLevelOneIdList);
         return $userDownLevelOneList;
     }
 
@@ -27,8 +54,8 @@ class UserServiceImpl implements UserService
      * @return $userDownLevelTwoList '直接邀请的直接邀请的用户数组'
      */
     public function findDownUserLevelTwo($userId){
-        $userDownLevelTwoList=(new UserDaoImpl())->findDownUserLevelTwo($userId);
-        $userDownLevelTwoList=(new UserDaoImpl())->encapUserMessageList($userDownLevelTwoList);
+        $userDownLevelTwoIdList=(new UserDaoImpl())->findDownUserLevelTwoIdByUserId($userId);
+        $userDownLevelTwoList=(new UserServiceImpl())->encapUserList($userDownLevelTwoIdList);
         return $userDownLevelTwoList;
     }
 
@@ -47,8 +74,8 @@ class UserServiceImpl implements UserService
      * @return $userDownLevelOneVipList '以自己为根的总数 数组'
      */
     public function findDownVipLevelOne($userId){
-        $userDownLevelOneVipList=(new UserDaoImpl())->findDownVipLevelOne($userId);
-        $userDownLevelOneVipList=(new UserDaoImpl())->encapUserMessageList($userDownLevelOneVipList);
+        $userDownLevelOneVipIdList=(new UserDaoImpl())->findDownVipLevelOneIdByUserId($userId);
+        $userDownLevelOneVipList=(new UserServiceImpl())->encapUserList($userDownLevelOneVipIdList);
         return $userDownLevelOneVipList;
     }
 
@@ -57,8 +84,8 @@ class UserServiceImpl implements UserService
      * @return $userDownLevelTwoVipList '直接邀请的直接邀请的vip数组'
      */
     public function findDownVipLevelTwo($userId){
-        $userDownLevelTwoVipList=(new UserDaoImpl())->findDownVipLevelTwo($userId);
-        $userDownLevelTwoVipList=(new UserDaoImpl())->encapUserMessageList($userDownLevelTwoVipList);
+        $userDownLevelTwoVipIdList=(new UserDaoImpl())->findDownVipLevelTwoIdByUserId($userId);
+        $userDownLevelTwoVipList=(new UserServiceImpl())->encapUserList($userDownLevelTwoVipIdList);
         return $userDownLevelTwoVipList;
     }
 
@@ -67,8 +94,8 @@ class UserServiceImpl implements UserService
      * @return $myDownPartnerFirstList '自己下方各分支的第一个合伙人数组'
      */
     public function findMyDownPartnerFirst($userId){
-        $myDownPartnerFirstList=(new UserDaoImpl())->findMyDownPartnerFirst($userId);
-        $myDownPartnerFirstList=(new UserDaoImpl())->encapUserMessageList($myDownPartnerFirstList);
+        $myDownPartnerFirstIdList=(new UserDaoImpl())->findMyDownPartnerFirstIdList($userId);
+        $myDownPartnerFirstList=(new UserServiceImpl())->encapUserList($myDownPartnerFirstIdList);
         return $myDownPartnerFirstList;
     }
 
@@ -77,8 +104,8 @@ class UserServiceImpl implements UserService
      * @return $partnerADownPartnerFirstList '合伙人A下方各分支的第一个合伙人数组'
      */
     public function findPartnerADownPartnerFirst($userId){
-        $partnerADownPartnerFirstList=(new UserDaoImpl())->findPartnerADownPartnerFirst($userId);
-        $partnerADownPartnerFirstList=(new UserDaoImpl())->encapUserMessageList($partnerADownPartnerFirstList);
+        $partnerADownPartnerFirstIdList=(new UserDaoImpl())->findPartnerADownPartnerFirstIdList($userId);
+        $partnerADownPartnerFirstList=(new UserServiceImpl())->encapUserList($partnerADownPartnerFirstIdList);
         return $partnerADownPartnerFirstList;
     }
 
@@ -87,8 +114,8 @@ class UserServiceImpl implements UserService
      * @return $partnerADownPartnerFirstList '合伙人B下方各分支的第一个合伙人数组'
      */
     public function findPartnerBDownPartnerFirst($userId){
-        $partnerBDownPartnerFirstList=(new UserDaoImpl())->findPartnerBDownPartnerFirst($userId);
-        $partnerBDownPartnerFirstList=(new UserDaoImpl())->encapUserMessageList($partnerBDownPartnerFirstList);
+        $partnerBDownPartnerFirstIdList=(new UserDaoImpl())->findPartnerBDownPartnerFirstIdList($userId);
+        $partnerBDownPartnerFirstList=(new UserServiceImpl())->encapUserList($partnerBDownPartnerFirstIdList);
         return $partnerBDownPartnerFirstList;
     }
 
@@ -101,6 +128,7 @@ class UserServiceImpl implements UserService
         $topPartnerDownNumbers=count($topPartnerDownNumbersList);
         return $topPartnerDownNumbers;
     }
+
 
 
 }
