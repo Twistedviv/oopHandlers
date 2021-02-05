@@ -118,4 +118,10 @@ class VideoServiceImpl implements VideoService
         return $res;
     }
 
+    /**
+     * @return $newVipList '30天内vip名单' id,用户名，实名，时间，头像
+     */
+    public function findNewVipList(){
+
+    }
 }

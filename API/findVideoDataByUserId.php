@@ -10,6 +10,7 @@
     $videoIdAndDesc=(new VideoServiceImpl)->findVideoIdAndDescAndCreatetime($userId);
     $videoNumbers=count($videoIdAndDesc);
     //封装每条视频数据组合为数组
+    $videoData=array();
     for($i=0;$i<$videoNumbers;$i++){
         $videoDesc=$videoIdAndDesc[$i]['video_desc'];
         $videoId=$videoIdAndDesc[$i]['id'];
@@ -18,6 +19,7 @@
         $videoLikeNumbers=(new VideoServiceImpl)->findVideoLikeNumbers($videoId);
         $videoReplyNumbers=(new VideoServiceImpl)->findVideoReplyNumbers($videoId);
         $videoShareNumbers=(new VideoServiceImpl)->findVideoShareNumbers($videoId);
+
         $videoData[$i]=array('video_desc'=>$videoDesc,'create_time'=>$create_time,'upCount'=>$videoUpNumbers,'likeCount'=>$videoLikeNumbers,'replyCount'=>$videoReplyNumbers,'shareCount'=>$videoShareNumbers);
     }
     $result = new Result(1,'请求成功',$videoData);

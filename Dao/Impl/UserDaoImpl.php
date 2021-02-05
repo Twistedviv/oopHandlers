@@ -9,20 +9,24 @@ class UserDaoImpl
 
     /**
      * @param $userId
-     * @return $realList 用户真实信息
+     * @return $real 用户真实信息
      */
     public function findRealMessage($userId){
         $sql="select * from ums_real_name where user_id=$userId";
         $db = new DB();
-        $realList=$db ->execQuery($sql);
-        return $realList;
+        $real=$db ->execQuery($sql);
+        return $real;
     }
 
+    /**
+     * @param $userId
+     * @return $user 用户信息
+     */
     public function findUserByUserId($userId){
         $sql="select * from ums_user where id=$userId";
         $db = new DB();
-        $userList=$db ->execQuery($sql);
-        return $userList;
+        $user=$db ->execQuery($sql);
+        return $user;
     }
 
 
@@ -64,7 +68,7 @@ class UserDaoImpl
      * @return $userDownLevelOneVipList
      */
     public function findDownVipLevelOneIdByUserId($userId){
-        $sql="select id from ums_user where is_vip <> 0 and id in (
+        $sql="select id 'user_id' from ums_user where is_vip <> 0 and id in (
             select user_id from ums_invite where ums_invite.up_user_id_1 = $userId)";
         $db = new DB();
         $userIdList=$db ->execQuery($sql);
@@ -76,7 +80,7 @@ class UserDaoImpl
      * @return $userDownLevelTwoVipList
      */
     public function findDownVipLevelTwoIdByUserId($userId){
-        $sql="select id from ums_user where is_vip <> 0 and id in (
+        $sql="select id 'user_id' from ums_user where is_vip <> 0 and id in (
             select user_id from ums_invite where ums_invite.up_user_id_2 = $userId)";
         $db = new DB();
         $userIdList=$db ->execQuery($sql);
@@ -127,5 +131,44 @@ class UserDaoImpl
         return $topPartnerDownNumbersList;
     }
 
+    /**
+     *return $newVip
+     */
+    public function findNewVip(){
+        $sql="select user_id,create_time from ums_vip where DATE_SUB(CURDATE(), INTERVAL 1 MONTH) <= date(create_time)";
+        $db = new DB();
+        $newVip=$db ->execQuery($sql);
+        return $newVip;
+    }
 
+    /**
+     *return $newPartner
+     */
+    public function findNewPartner(){
+        $sql="select user_id,create_time from ums_partner where DATE_SUB(CURDATE(), INTERVAL 1 MONTH) <= date(create_time)";
+        $db = new DB();
+        $newPartner=$db ->execQuery($sql);
+        return $newPartner;
+    }
+
+    /**
+     *return $newLucky
+     */
+    public function findNewLucky(){
+        $sql="select uid,drawtime from tbl_lottery where DATE_SUB(CURDATE(), INTERVAL 1 MONTH) <= date(drawtime)";
+        $db = new DB();
+        $newLucky=$db ->execQuery($sql);
+        return $newLucky;
+    }
+
+    /**
+     * @param $userId
+     * return $luckyUserData
+     */
+    public function findLuckyUserDataByUserId($userId){
+        $sql="select * from tbl_drawlottery where uid=$userId";
+        $db = new DB();
+        $luckyUserData=$db ->execQuery($sql);
+        return $luckyUserData;
+    }
 }

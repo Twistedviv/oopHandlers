@@ -2,12 +2,12 @@
 namespace app\Service\Impl;
 
 require_once dirname(__FILE__).'/../../Dao/Impl/UserDaoImpl.php';
-use app\Dao\Impl\UserDaoImpl;
 require_once dirname(__FILE__)."/../UserService.php";
+require_once "../Common/Result.php";
+
+use app\Common\Result;
 use app\Service\UserService;
-
-
-
+use app\Dao\Impl\UserDaoImpl;
 
 class UserServiceImpl implements UserService
 {
@@ -17,7 +17,7 @@ class UserServiceImpl implements UserService
      * @return $userList '封装用户id 头像 电话 上传时间 真实用户名'
      */
     public function encapUserList($idList){
-        $userList=null;
+        $userList=array();
         for($i=0;$i<count($idList);$i++){
             //取得每一个id
             $id=$idList[$i]['user_id'];
@@ -45,7 +45,8 @@ class UserServiceImpl implements UserService
      */
     public function findDownUserLevelOne($userId){
         $userDownLevelOneIdList=(new UserDaoImpl())->findDownUserLevelOneIdByUserId($userId);
-        $userDownLevelOneList=(new UserServiceImpl())->encapUserList($userDownLevelOneIdList);
+
+        $userDownLevelOneList=(new UserServiceImpl())->encapUserList($userDownLevelOneIdList);;
         return $userDownLevelOneList;
     }
 
@@ -55,6 +56,7 @@ class UserServiceImpl implements UserService
      */
     public function findDownUserLevelTwo($userId){
         $userDownLevelTwoIdList=(new UserDaoImpl())->findDownUserLevelTwoIdByUserId($userId);
+
         $userDownLevelTwoList=(new UserServiceImpl())->encapUserList($userDownLevelTwoIdList);
         return $userDownLevelTwoList;
     }
@@ -75,6 +77,7 @@ class UserServiceImpl implements UserService
      */
     public function findDownVipLevelOne($userId){
         $userDownLevelOneVipIdList=(new UserDaoImpl())->findDownVipLevelOneIdByUserId($userId);
+
         $userDownLevelOneVipList=(new UserServiceImpl())->encapUserList($userDownLevelOneVipIdList);
         return $userDownLevelOneVipList;
     }
@@ -129,6 +132,76 @@ class UserServiceImpl implements UserService
         return $topPartnerDownNumbers;
     }
 
+    /**
+     * @return $newVipList ‘JSON化’
+     */
+    public function findNewVipList(){
+        $userList=array();
+        $vipIdAndTime=(new UserDaoImpl())->findNewVip();
+        for($i=0;$i<count($vipIdAndTime);$i++){
+            $id=$vipIdAndTime[$i]['user_id'];
+            $create_time=$vipIdAndTime[$i]['create_time'];
+            $user=(new UserDaoImpl())->findUserByUserId($id);
+            $real=(new UserDaoImpl())->findRealMessage($id);
+            if(!empty($real)){
+                $realName=$real[0]['name'];
+            }
+            else{
+                $realName=$user[0]['uname'];
+            }
+            //封装所需数组
+            $userModel=array('id'=>$user[0]['id'],'realName'=>$realName,'uname'=>$user[0]['uname'],'headimage'=>$user[0]['headimage_url'],
+                'regtime'=>substr($create_time, 0 , 16));
+            $userList[$i]=$userModel;
+        }
+        $result = new Result(1,'请求成功',$userList);
+        return $result->send();;
+    }
 
+    /**
+     * @return $newPartnerList ‘JSON化’
+     */
+    public function findNewPartnerList(){
+        $userList=array();
+        $partnerIdAndTime=(new UserDaoImpl())->findNewPartner();
+        for($i=0;$i<count($partnerIdAndTime);$i++){
+            $id=$partnerIdAndTime[$i]['user_id'];
+            $create_time=$partnerIdAndTime[$i]['create_time'];
+            $user=(new UserDaoImpl())->findUserByUserId($id);
+            $real=(new UserDaoImpl())->findRealMessage($id);
+            if(!empty($real)){
+                $realName=$real[0]['name'];
+            }
+            else{
+                $realName=$user[0]['uname'];
+            }
+            //封装所需数组
+            $userModel=array('id'=>$user[0]['id'],'realName'=>$realName,'uname'=>$user[0]['uname'],'headimage'=>$user[0]['headimage_url'],
+                'regtime'=>substr($create_time, 0 , 16));
+            $userList[$i]=$userModel;
 
+        }
+        $result = new Result(1,'请求成功',$userList);
+        return $result->send();;
+    }
+
+    /**
+     * @return $newLuckyList ‘JSON化’
+     */
+    public function findNewLuckyList(){
+        $luckyList=array();
+        $luckyIdAndTime=(new UserDaoImpl())->findNewLucky();
+        for($i=0;$i<count($luckyIdAndTime);$i++){
+            $id=$luckyIdAndTime[$i]['uid'];
+            $drawtime=$luckyIdAndTime[$i]['drawtime'];
+            $user=(new UserDaoImpl())->findUserByUserId($id);
+            $luckyUserData=(new UserDaoImpl())->findLuckyUserDataByUserId($id);
+            //封装所需数组
+            $userModel=array('id'=>$user[0]['id'],'uname'=>$user[0]['uname'],'headimage'=>$user[0]['headimage_url'],
+                'level'=>$luckyUserData[0]['level'],'drawtime'=>substr($drawtime, 0 , 16));
+            $luckyList[$i]=$userModel;
+        }
+        $result = new Result(1,'请求成功',$luckyList);
+        return $result->send();
+    }
 }

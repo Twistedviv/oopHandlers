@@ -7,7 +7,7 @@
 
     $userId=$_GET['userId'];
     $video=(new VideoServiceImpl)->findVideoByUserId($userId);
-    $videoList=null;
+    $videoList=array();
     for($i=0;$i<count($video);$i++){
         $videoList[$i]=array('id'=>$video[$i]['id'],'video_desc'=>$video[$i]['video_desc'],'create_time'=>substr($video[$i]['create_time'],0,10),
             'video_poster_url'=>$video[$i]['video_poster_url'],'is_private'=>$video[$i]['is_private']);
