@@ -32,7 +32,7 @@ class UserServiceImpl implements UserService
                 $realName=$user[0]['uname'];
             }
             //封装所需数组
-            $userModel=array('id'=>$user[0]['id'],'name'=>$realName,'headimage_url'=>$user[0]['headimage_url'],'utel'=>$user[0]['utel'],
+            $userModel=array('id'=>$user[0]['id'],'uname'=>$realName,'headimage_url'=>$user[0]['headimage_url'],'utel'=>$user[0]['utel'],
                 'create_time'=>substr($user[0]['create_time'] , 0 , 10));
             $userList[$i]=$userModel;
         }
@@ -138,7 +138,9 @@ class UserServiceImpl implements UserService
     public function findNewVipList(){
         $userList=array();
         $vipIdAndTime=(new UserDaoImpl())->findNewVip();
-        for($i=0;$i<count($vipIdAndTime);$i++){
+//        $count = count($vipIdAndTime);
+        $count = 30;
+        for($i=0;$i<$count;$i++){
             $id=$vipIdAndTime[$i]['user_id'];
             $create_time=$vipIdAndTime[$i]['create_time'];
             $user=(new UserDaoImpl())->findUserByUserId($id);
@@ -149,8 +151,9 @@ class UserServiceImpl implements UserService
             else{
                 $realName=$user[0]['uname'];
             }
+            $content = "恭喜".$realName."成为会员";
             //封装所需数组
-            $userModel=array('id'=>$user[0]['id'],'realName'=>$realName,'uname'=>$user[0]['uname'],'headimage'=>$user[0]['headimage_url'],
+            $userModel=array('id'=>$user[0]['id'],'realName'=>$realName,'uname'=>$user[0]['uname'],'headimage'=>$user[0]['headimage_url'],'content'=>$content,
                 'regtime'=>substr($create_time, 0 , 16));
             $userList[$i]=$userModel;
         }
@@ -164,7 +167,9 @@ class UserServiceImpl implements UserService
     public function findNewPartnerList(){
         $userList=array();
         $partnerIdAndTime=(new UserDaoImpl())->findNewPartner();
-        for($i=0;$i<count($partnerIdAndTime);$i++){
+//        $count = count($partnerIdAndTime);
+        $count = 30;
+        for($i=0;$i<$count;$i++){
             $id=$partnerIdAndTime[$i]['user_id'];
             $create_time=$partnerIdAndTime[$i]['create_time'];
             $user=(new UserDaoImpl())->findUserByUserId($id);
@@ -175,8 +180,9 @@ class UserServiceImpl implements UserService
             else{
                 $realName=$user[0]['uname'];
             }
+            $content = "恭喜".$realName."成为合伙人";
             //封装所需数组
-            $userModel=array('id'=>$user[0]['id'],'realName'=>$realName,'uname'=>$user[0]['uname'],'headimage'=>$user[0]['headimage_url'],
+            $userModel=array('id'=>$user[0]['id'],'realName'=>$realName,'uname'=>$user[0]['uname'],'headimage'=>$user[0]['headimage_url'],'content'=>$content,
                 'regtime'=>substr($create_time, 0 , 16));
             $userList[$i]=$userModel;
 
@@ -191,14 +197,19 @@ class UserServiceImpl implements UserService
     public function findNewLuckyList(){
         $luckyList=array();
         $luckyIdAndTime=(new UserDaoImpl())->findNewLucky();
-        for($i=0;$i<count($luckyIdAndTime);$i++){
+//        $count = count($luckyIdAndTime);
+        $count = 30;
+        for($i=0;$i<$count;$i++){
             $id=$luckyIdAndTime[$i]['uid'];
             $drawtime=$luckyIdAndTime[$i]['drawtime'];
             $user=(new UserDaoImpl())->findUserByUserId($id);
             $luckyUserData=(new UserDaoImpl())->findLuckyUserDataByUserId($id);
+            $levelName = ['一等奖','二等奖'];
+            //整理内容
+            $content = "恭喜".$user[0]['uname']."获得".$levelName[$luckyUserData[0]['level']-1];
             //封装所需数组
             $userModel=array('id'=>$user[0]['id'],'uname'=>$user[0]['uname'],'headimage'=>$user[0]['headimage_url'],
-                'level'=>$luckyUserData[0]['level'],'drawtime'=>substr($drawtime, 0 , 16));
+                'level'=>$luckyUserData[0]['level'],'content'=>$content,'regtime'=>substr($drawtime, 0 , 16));
             $luckyList[$i]=$userModel;
         }
         $result = new Result(1,'请求成功',$luckyList);
