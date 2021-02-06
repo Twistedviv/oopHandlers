@@ -3,7 +3,7 @@ namespace app\Service\Impl;
 
 require_once dirname(__FILE__).'/../../Dao/Impl/UserDaoImpl.php';
 require_once dirname(__FILE__)."/../UserService.php";
-require_once "../Common/Result.php";
+require_once dirname(__FILE__)."/../../Common/Result.php";
 
 use app\Common\Result;
 use app\Service\UserService;
@@ -158,7 +158,7 @@ class UserServiceImpl implements UserService
             $userList[$i]=$userModel;
         }
         $result = new Result(1,'请求成功',$userList);
-        return $result->send();;
+        return $result->send();
     }
 
     /**

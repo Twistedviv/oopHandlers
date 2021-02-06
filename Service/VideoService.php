@@ -74,8 +74,19 @@ interface VideoService
     public function deleteVideoByVideoId($videoId);
 
     /**
-     * @param $videoId,$poster,$desc,$tag,$isPrivate
-     * @return $res 编辑视频信息:封面 描述 标签 公开性
+     * @param $videoId
+     * @param $poster
+     * @param $desc
+     * @param $tag
+     * @param $isPrivate
+     * @return $res 编辑视频信息 封面 描述 标签 公开性
      */
     public function updateVideoMessageByVideoId($videoId,$poster,$desc,$tag,$isPrivate);
+
+    /**
+     * @param $keyWord
+     * @param $userId
+     * @return $videoList '通过关键字筛选后的video数组 优先级 1.标签 2.描述'
+     */
+    public function findVideoListByKeyWord($keyWord, $userId);
 }

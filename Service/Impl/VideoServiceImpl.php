@@ -64,7 +64,7 @@ class VideoServiceImpl implements VideoService
     }
 
     /**
-     * @param $userId
+     * @param $videoId
      * @return $videoUpNumbers 视频点赞数
      */
     public function findVideoUpNumbers($videoId){
@@ -74,7 +74,7 @@ class VideoServiceImpl implements VideoService
     }
 
     /**
-     * @param $userId
+     * @param $videoId
      * @return $videoLikeNumbers 视频收藏数
      */
     public function findVideoLikeNumbers($videoId){
@@ -84,7 +84,7 @@ class VideoServiceImpl implements VideoService
     }
 
     /**
-     * @param $userId
+     * @param $videoId
      * @return $videoReplyNumbers 视频评论数
      */
     public function findVideoReplyNumbers($videoId){
@@ -113,7 +113,11 @@ class VideoServiceImpl implements VideoService
     }
 
     /**
-     * @param $videoId,$poster,$desc,$tag,$isPrivate
+     * @param $videoId
+     * @param $poster
+     * @param $desc
+     * @param $tag
+     * @param $isPrivate
      * @return $res 编辑视频信息 封面 描述 标签 公开性
      */
     public function updateVideoMessageByVideoId($videoId,$poster,$desc,$tag,$isPrivate){

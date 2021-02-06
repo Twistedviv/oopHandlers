@@ -6,6 +6,12 @@ namespace app\Service;
 interface UserService
 {
     /**
+     * @param $idList 'id数组'
+     * @return $userList '封装用户id 头像 电话 上传时间 真实用户名'
+     */
+    public function encapUserList($idList);
+
+    /**
      * @param $userId
      * @return $userDownLevelOneList '直接邀请的用户数组'
      */
@@ -60,9 +66,20 @@ interface UserService
     public function findTopPartnerDownNumbers($userId);
 
     /**
-     * @param $idList 'id数组'
-     * @return $userList '封装用户id 头像 电话 上传时间 真实用户名'
+     * @return $newVipList ‘JSON化’
      */
-    public function encapUserList($idList);
+    public function findNewVipList();
+
+    /**
+     * @return $newPartnerList ‘JSON化’
+     */
+    public function findNewPartnerList();
+
+    /**
+     * @return $newLuckyList ‘JSON化’
+     */
+    public function findNewLuckyList();
+
+
 
 }
