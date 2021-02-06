@@ -1,9 +1,10 @@
 <?php
-    require_once dirname(__FILE__)."/../Service/Impl/UserServiceImpl.php";
+    require_once dirname(__FILE__)."/../Service/Impl/VideoServiceImpl.php";
 
-    use app\Service\Impl\UserServiceImpl;
+    use app\Service\Impl\VideoServiceImpl;
 
-    $keyWord=$_GET('keyWord');
-    $userId=$_GET('userId');
-    $newLuckyList=(new UserServiceImpl)->findVideoListByKeyWord();
-    echo $newLuckyList;
+    $userId=$_GET['userId'];
+    $keyWord=$_GET['keyWord'];
+
+    $videoList=(new VideoServiceImpl)->findVideoListByKeyWord($keyWord,$userId);
+    echo $videoList;

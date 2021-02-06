@@ -182,7 +182,7 @@ class UserServiceImpl implements UserService
 
         }
         $result = new Result(1,'请求成功',$userList);
-        return $result->send();;
+        return $result->send();
     }
 
     /**

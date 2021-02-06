@@ -1,11 +1,14 @@
 <?php
 
-namespace app\Service\Impl;
+    namespace app\Service\Impl;
 
-require_once dirname(__FILE__).'/../../Dao/Impl/VideoDaoImpl.php';
-use app\Dao\Impl\VideoDaoImpl;
-require_once dirname(__FILE__)."/../VideoService.php";
-use app\Service\VideoService;
+    require_once dirname(__FILE__)."/../VideoService.php";
+    require_once dirname(__FILE__).'/../../Dao/Impl/VideoDaoImpl.php';
+    require_once dirname(__FILE__)."/../../Common/Result.php";
+
+    use app\Common\Result;
+    use app\Dao\Impl\VideoDaoImpl;
+    use app\Service\VideoService;
 
 class VideoServiceImpl implements VideoService
 {
@@ -119,9 +122,53 @@ class VideoServiceImpl implements VideoService
     }
 
     /**
-     * @return $newVipList '30天内vip名单' id,用户名，实名，时间，头像
+     * @param $keyWord
+     * @param $userId
+     * @return $videoList '通过关键字筛选后的video数组 优先级 1.标签 2.描述'
      */
-    public function findNewVipList(){
+    public function findVideoListByKeyWord($keyWord, $userId){
+        $videoList=array();
+        //$idList=array();
+        //查找符合条件的idList
+        if($keyWord==""){
+            $idList=(new VideoDaoImpl())->findAllVideoId();
+        }
+        else{
+            $videoIdByTag=(new VideoDaoImpl())->findVideoIdByTag($keyWord);
+            $videoIdByDesc=(new VideoDaoImpl())->findVideoIdByDescExceptTag($keyWord);
+            $idList=array_merge($videoIdByTag,$videoIdByDesc);
+        }
+        //判断idList是否为空
+        if(!empty($idList)){
+            //封装videoList
+            for($i=0;$i<count($idList);$i++){
+                $videoId=$idList[$i]['id'];
+                $video=(new VideoDaoImpl())->findVideoByVideoId($videoId);
+                $likecount=(new VideoServiceImpl())->findVideoLikeNumbers($videoId);
+                $replycount=(new VideoServiceImpl())->findVideoReplyNumbers($videoId);
+                //视频的上传者 $upId
+                $upId=$video[0]['user_id'];
+                //查找userId是否关注up
+                $focus=(new VideoDaoImpl())->findFocusList($upId, $userId);
+                $isfocus=false;
+                if(!empty($focus)) $isfocus=true;
+                //查找userId是否收藏该userId
+                $like=(new VideoDaoImpl())->findLikeList($videoId, $userId);
+                $islike=false;
+                if(!empty($like)) $islike=true;
+                //查找userId是否点赞该userId
+                $up=(new VideoDaoImpl())->findUpList($videoId, $userId);
+                $isup=false;
+                if(!empty($up)) $isup=true;
+                $videoList[$i]=array('videoId'=>$videoId,'url'=>$video[0]['video_url'],'posterurl'=>$video[0]['video_poster_url'],
+                    'videodesc'=>$video[0]['video_desc'],'uid'=>$upId,'uname'=>$video[0]['user_uname'],
+                    'headimage'=>$video[0]['user_headimage_url'],'productid'=>$video[0]['product_id'],'publishtime'=>$video[0]['publishtime'],
+                    'upcount'=>$video[0]['up_count'],'likecount'=>$likecount,'replycount'=>$replycount,
+                    'isfocus'=>$isfocus,'islike'=>$islike,'isup'=>$isup);
+            }
+        }
 
+        $result = new Result(1,'请求成功',$videoList);
+        return $result->send();
     }
 }

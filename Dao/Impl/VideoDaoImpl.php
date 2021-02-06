@@ -139,5 +139,73 @@ class VideoDaoImpl
         return $res;
     }
 
+    /**
+     * @param $keyWord
+     * @retun $videoIdListByTag
+     */
+    public function findVideoIdByTag($keyWord){
+        $sql="select id from cms_video where video_tag like '%$keyWord%' and delete_status = 0";
+        $db = new DB();
+        $res=$db ->execQuery($sql);
+        return $res;
+    }
+
+    /**
+     * @param $keyWord
+     * @retun $videoIdListByDesc
+     */
+    public function findVideoIdByDescExceptTag($keyWord){
+        $sql="select id from cms_video where delete_status = 0 and video_desc like '%$keyWord%' and
+            id not in (select id from cms_video where video_tag like '%$keyWord%')";
+        $db = new DB();
+        $res=$db ->execQuery($sql);
+        return $res;
+    }
+
+    /**
+     * @return $allVideoId
+     */
+    public function findAllVideoId(){
+        $sql="select id from cms_video where delete_status = 0";
+        $db = new DB();
+        $res=$db ->execQuery($sql);
+        return $res;
+    }
+
+    /**
+     * @param $upId
+     * @param $userId
+     * @return $focusList 关注表中的对应数据
+     */
+    public function findFocusList($upId, $userId){
+        $sql="select * from ums_video_focus where focused_user_id=$upId and focus_user_id=$userId";
+        $db = new DB();
+        $res=$db ->execQuery($sql);
+        return $res;
+    }
+
+    /**
+     * @param $video
+     * @param $userId
+     * @return $likeList 收藏表中的对应数据
+     */
+    public function findLikeList($videoId, $userId){
+        $sql="select * from cms_video_like where video_id=$videoId and user_id=$userId";
+        $db = new DB();
+        $res=$db ->execQuery($sql);
+        return $res;
+    }
+
+    /**
+     * @param $video
+     * @param $userId
+     * @return $upList 点赞表中的对应数据
+     */
+    public function findUpList($videoId, $userId){
+        $sql="select * from cms_video_up where video_id=$videoId and user_id=$userId";
+        $db = new DB();
+        $res=$db ->execQuery($sql);
+        return $res;
+    }
 
 }

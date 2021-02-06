@@ -15,7 +15,9 @@
         $videoDesc=$videoIdAndDesc[$i]['video_desc'];
         $videoId=$videoIdAndDesc[$i]['id'];
         $create_time=$videoIdAndDesc[$i]['create_time'];
-        $videoUpNumbers=(new VideoServiceImpl)->findVideoUpNumbers($videoId);
+        //$videoUpNumbers=(new VideoServiceImpl)->findVideoUpNumbers($videoId);
+        $video=(new VideoServiceImpl())->findVideoByVideoId($videoId);
+        $videoUpNumbers=$video[0]['up_count'];
         $videoLikeNumbers=(new VideoServiceImpl)->findVideoLikeNumbers($videoId);
         $videoReplyNumbers=(new VideoServiceImpl)->findVideoReplyNumbers($videoId);
         $videoShareNumbers=(new VideoServiceImpl)->findVideoShareNumbers($videoId);
