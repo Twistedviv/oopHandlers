@@ -36,7 +36,7 @@ class MessageDaoImpl
      * @return $res 编辑查看状态为已读
      */
     public function updateCheckedStatusById($Id){
-        $sql="UPDATE mms_notice SET checked_status = 1 where $Id=notice_content_id";
+        $sql="UPDATE mms_notice SET checked_status = 1 where $Id=id";
         $db = new DB();
         $res=$db ->execUpdate($sql);
         return $res;

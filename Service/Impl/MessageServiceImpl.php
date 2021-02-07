@@ -23,9 +23,14 @@ class MessageServiceImpl implements MessageService
             $noticeId=$notice[$i]['notice_content_id'];
             $content=(new MessageDaoImpl())->findContentByNoticeId($noticeId);
 
-            $noticeList[$i]=array('id'=>$notice[$i]['id'],'createTime'=>$notice[$i]['create_time'],
-                                'title'=>$content[0]['title'],'text'=>$content[0]['text'],
-                                'imageUrl'=>$content[0]['image_url'],'navigateUrl'=>$content[0]['navigate_url']);
+            $noticeList[$i]=array(
+                'id'=>$notice[$i]['id'],
+                'createTime'=>substr($notice[$i]['create_time'],5,5),
+                'title'=>$content[0]['title'],
+                'text'=>$content[0]['text'],
+                'checkedStatus'=>$notice[$i]['checked_status'],
+                'imageUrl'=>$content[0]['image_url'],
+                'navigateUrl'=>$content[0]['navigate_url']);
         }
         $result = new Result(1,'请求成功',$noticeList);
         return $result->send();

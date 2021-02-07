@@ -164,11 +164,11 @@ class VideoServiceImpl implements VideoService
                 $up=(new VideoDaoImpl())->findUpList($videoId, $userId);
                 $isup=false;
                 if(!empty($up)) $isup=true;
-                $videoList[$i]=array('videoId'=>$videoId,'url'=>$video[0]['video_url'],'posterurl'=>$video[0]['video_poster_url'],
+                $videoList[$i]=array('videoid'=>$videoId,'url'=>$video[0]['video_url'],'posterurl'=>$video[0]['video_poster_url'],
                     'videodesc'=>$video[0]['video_desc'],'uid'=>$upId,'uname'=>$video[0]['user_uname'],
                     'headimage'=>$video[0]['user_headimage_url'],'productid'=>$video[0]['product_id'],'publishtime'=>$video[0]['publishtime'],
-                    'upcount'=>$video[0]['up_count'],'likecount'=>$likecount,'replycount'=>$replycount,
-                    'isfocus'=>$isfocus,'islike'=>$islike,'isup'=>$isup);
+                    'zancount'=>$video[0]['up_count'],'likecount'=>$likecount,'replycount'=>$replycount,
+                    'isfocus'=>$isfocus,'islike'=>$islike,'iszan'=>$isup);
             }
         }
 

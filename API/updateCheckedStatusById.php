@@ -3,7 +3,7 @@
 
     use app\Service\Impl\MessageServiceImpl;
 
-    $Id=$_POST['Id'];
+    $Id=$_POST['noticeId'];
 
     $res=(new MessageServiceImpl)->updateCheckedStatusById($Id);
     echo $res;
