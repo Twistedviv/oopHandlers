@@ -59,8 +59,16 @@ class DB
         return $rs;
     }
 
+    public function execUpdateWithLastId($sql){
+        $res = $this->link->query($sql);
+        if (!$res) die('数据库操作失败!') . mysqli_error();
+        $id = mysqli_insert_id($this->link);
+        $rs=array('result'=>$res,'id'=>$id);
+        return $rs;
+    }
+
     public function getLastInsertId(){
-        $rs = $this->link->mysqli_inset_id();
+        $rs = $this->link->mysqli_insert_id();
         return $rs;
     }
 

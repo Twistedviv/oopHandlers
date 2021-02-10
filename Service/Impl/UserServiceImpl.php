@@ -215,4 +215,90 @@ class UserServiceImpl implements UserService
         $result = new Result(1,'请求成功',$luckyList);
         return $result->send();
     }
+
+    /**
+     * @param $userId
+     * @param $name
+     * @param $phone
+     * @param $site
+     * @param $isDefault
+     * @return $result '实现数据插入反馈操作结果'
+     */
+    public function addUserReceiveAddress($userId, $name, $phone, $site, $isDefault){
+        //定义错误变量
+        $error=0;
+        $result=0;
+        if($name==""){
+            $result = new Result(2,'收获人姓名不能为空',"");
+            $error=1;
+        }
+        if($error==0&&strlen($name)>10){
+            $result = new Result(2,'收获人姓名长度不能大于10',"");
+            $error=1;
+        }
+        if($error==0&&$phone==""){
+            $result = new Result(2,'收获人电话不能为空',"");
+            $error=1;
+        }
+        if($error==0&&strlen($phone)<>11){
+            $result = new Result(2,'收获人电话必须为11位',"");
+            $error=1;
+        }
+        if($error==0&&$site==""){
+            $result = new Result(2,'收获人地址不能为空',"");
+            $error=1;
+        }
+        if($error==0&&strlen($site)>60){
+            $result = new Result(2,'收获人地址长度不能大于60',"");
+            $error=1;
+        }
+        if($error==0){
+            //实现插入数据
+            $re=(new UserDaoImpl())->addUserReceiveAddress($userId, $name, $phone, $site, $isDefault);
+            //更新user表中默认收获地址
+            if($isDefault==1){
+                $addressId=$re['id'];
+                (new UserDaoImpl())->UpdateAddressIdByUserId($userId,$addressId);
+
+            }
+            if($re){
+                $result = new Result(0,'数据插入成功','数据插入成功');
+            }
+            else{
+                $result = new Result(0,'数据插入失败','数据插入失败');
+            }
+        }
+        return $result->send();
+    }
+
+    /**
+     * @param $userId
+     * @return $userReceiveAddressList '收货地址列表'
+     */
+    public function findUserReceiveAddress($userId){
+        $userReceiveAddressList=array();
+        $userReceiveAddress=(new UserDaoImpl())->findUserReceiveAddress($userId);
+        for($i=0;$i<count($userReceiveAddress);$i++){
+            $userReceiveAddressList[$i]=array(
+                'id'=> $userReceiveAddress[$i]['id'],
+                'userId'=> $userReceiveAddress[$i]['user_id'],
+                'name'=> $userReceiveAddress[$i]['name'],
+                'phone'=> $userReceiveAddress[$i]['phone'],
+                'site'=> $userReceiveAddress[$i]['site'],
+                'isDefault'=> $userReceiveAddress[$i]['is_default'],
+            );
+        }
+        $result = new Result(0,'请求成功',$userReceiveAddressList);
+        return $result->send();
+    }
+
+    /**
+     * @param $addressId
+     * @return $res
+     */
+    public function deleteUserReceiveAddressByAddressId($addressId){
+        $res=(new UserDaoImpl())->deleteUserReceiveAddressByAddressId($addressId);
+        $result = new Result(0,'删除成功',$res);
+        return $result->send();
+    }
 }

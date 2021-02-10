@@ -171,4 +171,56 @@ class UserDaoImpl
         $luckyUserData=$db ->execQuery($sql);
         return $luckyUserData;
     }
+
+    /**
+     * @param $userId
+     * @param $name
+     * @param $phone
+     * @param $site
+     * @param $isDefault
+     * @return $res '实现插入用户收获地址'
+     */
+    public function addUserReceiveAddress($userId, $name, $phone, $site, $isDefault){
+        $sql="insert into ums_address(user_id,name,phone,site,is_default,delete_status) values (
+              '$userId','$name','$phone','$site','$isDefault','0')";
+        $db = new DB();
+        $res=$db ->execUpdateWithLastId($sql);
+        return $res;
+    }
+
+    /**
+     * @param $userId
+     * @param $addressId
+     * @return $res ‘更新user表中addressId’
+     */
+    public function UpdateAddressIdByUserId($userId,$addressId){
+        //获取addressId
+        $db = new DB();
+        $sql="UPDATE ums_user SET address_id=$addressId where $userId=id";
+        $db ->execUpdate($sql);
+        $sql="UPDATE ums_address SET is_default=0 where $userId=user_id and id <> $addressId";
+        $db ->execUpdate($sql);
+    }
+
+    /**
+     * @param $userId
+     * return $userReceiveAddress
+     */
+    public function findUserReceiveAddress($userId){
+        $sql="select * from ums_address where user_id=$userId and delete_status = 0";
+        $db = new DB();
+        $userReceiveAddress=$db ->execQuery($sql);
+        return $userReceiveAddress;
+    }
+
+    /**
+     * @param $addressId
+     * @return $result
+     */
+    public function deleteUserReceiveAddressByAddressId($addressId){
+        $sql="UPDATE ums_address SET delete_status=1 where $addressId=id";
+        $db = new DB();
+        $res=$db ->execUpdate($sql);
+        return $res;
+    }
 }
