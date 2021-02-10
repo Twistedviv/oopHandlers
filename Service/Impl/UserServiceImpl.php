@@ -259,7 +259,6 @@ class UserServiceImpl implements UserService
             if($isDefault==1){
                 $addressId=$re['id'];
                 (new UserDaoImpl())->UpdateAddressIdByUserId($userId,$addressId);
-
             }
             if($re){
                 $result = new Result(0,'数据插入成功','数据插入成功');
@@ -307,10 +306,11 @@ class UserServiceImpl implements UserService
      * @param $name
      * @param $phone
      * @param $site
+     * @param $userId
      * @param $isDefault
      * @return $res
      */
-    public function updateUserReceiveAddressByAddressId($addressId, $name, $phone, $site, $isDefault){
+    public function updateUserReceiveAddressByAddressId($addressId,$userId, $name, $phone, $site, $isDefault){
         //定义错误变量
         $error=0;
         $result=0;
@@ -341,6 +341,10 @@ class UserServiceImpl implements UserService
         if($error==0){
             $res=(new UserDaoImpl())->updateUserReceiveAddressByAddressId
             ($addressId,$name,$phone,$site,$isDefault);
+            //更新user表中默认收获地址
+            if($isDefault==1){
+                (new UserDaoImpl())->UpdateAddressIdByUserId($userId,$addressId);
+            }
             $result = new Result(0,'编辑成功',$res);
 
         }

@@ -4,10 +4,11 @@
     use app\Service\Impl\UserServiceImpl;
 
     $addressId=$_POST['addressId'];
+    $userId = $_POST['userId'];
     $name=$_POST['name'];
     $phone=$_POST['phone'];
     $site=$_POST['site'];
     $isDefault=$_POST['isDefault'];
-    $result=(new UserServiceImpl)->updateUserReceiveAddressByAddressId($addressId,
+    $result=(new UserServiceImpl)->updateUserReceiveAddressByAddressId($addressId,$userId,
     $name,$phone,$site,$isDefault);
     echo $result;
