@@ -223,4 +223,20 @@ class UserDaoImpl
         $res=$db ->execUpdate($sql);
         return $res;
     }
+
+    /**
+     * @param $addressId
+     * @param $name
+     * @param $phone
+     * @param $site
+     * @param $isDefault
+     * @return $res
+     */
+    public function updateUserReceiveAddressByAddressId
+        ($addressId,$name,$phone,$site,$isDefault){
+        $sql="UPDATE ums_address SET name='$name' , phone='$phone',site='$site',is_default='$isDefault'  where $addressId=id";
+        $db = new DB();
+        $res=$db ->execUpdate($sql);
+        return $res;
+    }
 }

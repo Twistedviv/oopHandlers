@@ -301,4 +301,49 @@ class UserServiceImpl implements UserService
         $result = new Result(0,'删除成功',$res);
         return $result->send();
     }
+
+    /**
+     * @param $addressId
+     * @param $name
+     * @param $phone
+     * @param $site
+     * @param $isDefault
+     * @return $res
+     */
+    public function updateUserReceiveAddressByAddressId($addressId, $name, $phone, $site, $isDefault){
+        //定义错误变量
+        $error=0;
+        $result=0;
+        if($name==""){
+            $result = new Result(2,'收获人姓名不能为空',"");
+            $error=1;
+        }
+        if($error==0&&strlen($name)>10){
+            $result = new Result(2,'收获人姓名长度不能大于10',"");
+            $error=1;
+        }
+        if($error==0&&$phone==""){
+            $result = new Result(2,'收获人电话不能为空',"");
+            $error=1;
+        }
+        if($error==0&&strlen($phone)<>11){
+            $result = new Result(2,'收获人电话必须为11位',"");
+            $error=1;
+        }
+        if($error==0&&$site==""){
+            $result = new Result(2,'收获人地址不能为空',"");
+            $error=1;
+        }
+        if($error==0&&strlen($site)>60){
+            $result = new Result(2,'收获人地址长度不能大于60',"");
+            $error=1;
+        }
+        if($error==0){
+            $res=(new UserDaoImpl())->updateUserReceiveAddressByAddressId
+            ($addressId,$name,$phone,$site,$isDefault);
+            $result = new Result(0,'编辑成功',$res);
+
+        }
+        return $result->send();
+    }
 }
