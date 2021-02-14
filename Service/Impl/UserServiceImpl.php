@@ -232,7 +232,7 @@ class UserServiceImpl implements UserService
             $result = new Result(2,'收获人姓名不能为空',"");
             $error=1;
         }
-        if($error==0&&strlen($name)>10){
+        if($error==0&&mb_strlen($name)>10){
             $result = new Result(2,'收获人姓名长度不能大于10',"");
             $error=1;
         }
@@ -248,8 +248,8 @@ class UserServiceImpl implements UserService
             $result = new Result(2,'收获人地址不能为空',"");
             $error=1;
         }
-        if($error==0&&strlen($site)>60){
-            $result = new Result(2,'收获人地址长度不能大于60',"");
+        if($error==0&&mb_strlen($site)>63){
+            $result = new Result(2,'收获人地址长度过长',"");
             $error=1;
         }
         if($error==0){
@@ -318,7 +318,7 @@ class UserServiceImpl implements UserService
             $result = new Result(2,'收获人姓名不能为空',"");
             $error=1;
         }
-        if($error==0&&strlen($name)>10){
+        if($error==0&&mb_strlen($name)>10){
             $result = new Result(2,'收获人姓名长度不能大于10',"");
             $error=1;
         }
@@ -334,8 +334,8 @@ class UserServiceImpl implements UserService
             $result = new Result(2,'收获人地址不能为空',"");
             $error=1;
         }
-        if($error==0&&strlen($site)>60){
-            $result = new Result(2,'收获人地址长度不能大于60',"");
+        if($error==0&&mb_strlen($site)>63){
+            $result = new Result(2,'收获人地址长度过长',"");
             $error=1;
         }
         if($error==0){
