@@ -75,17 +75,6 @@ class VideoDaoImpl
 
     /**
      * @param $videoId
-     * @return $videoUpList 视频点赞数组
-     */
-    public function findVideoUpList($videoId){
-        $sql="select * from cms_video_up where $videoId=video_id";
-        $db = new DB();
-        $videoUpList=$db ->execQuery($sql);
-        return $videoUpList;
-    }
-
-    /**
-     * @param $videoId
      * @return $videoLikeList 视频收藏数组
      */
     public function findVideoLikeList($videoId){

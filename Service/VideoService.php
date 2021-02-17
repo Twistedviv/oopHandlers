@@ -42,11 +42,7 @@ interface VideoService
      */
     public function findVideoIdAndDescAndCreatetime($userId);
 
-    /**
-     * @param $videoId
-     * @return $videoUpNumbers 视频点赞数
-     */
-    public function findVideoUpNumbers($videoId);
+
 
     /**
      * @param $videoId

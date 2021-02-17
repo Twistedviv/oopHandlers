@@ -65,16 +65,6 @@ class VideoServiceImpl implements VideoService
 
     /**
      * @param $videoId
-     * @return $videoUpNumbers 视频点赞数
-     */
-    public function findVideoUpNumbers($videoId){
-        $videoUp=(new VideoDaoImpl())->findVideoUpList($videoId);
-        $videoUpNumbers=count($videoUp);
-        return $videoUpNumbers;
-    }
-
-    /**
-     * @param $videoId
      * @return $videoLikeNumbers 视频收藏数
      */
     public function findVideoLikeNumbers($videoId){

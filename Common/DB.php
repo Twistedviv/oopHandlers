@@ -68,8 +68,8 @@ class DB
     }
 
     public function getLastInsertId(){
-        $rs = $this->link->mysqli_insert_id();
-        return $rs;
+        $id = mysqli_insert_id($this->link);
+        return $id;
     }
 
 }
