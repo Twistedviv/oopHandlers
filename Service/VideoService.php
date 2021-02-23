@@ -8,60 +8,44 @@ interface VideoService
 {
     /**
      * @param $userId
-     * @retrun $userNameAndHeadimage 包含用户名及头像的数组
+     * @return $videoData
      */
-    public function findUserNameAndHeadimage($userId);
+    public function findVideoDataByUserId($userId);
 
     /**
      * @param $userId
-     * @param $userNameAndHeadimage
-     * @param $cover
-     * @param $video
+     * @return $videoList
+     */
+    public function findVideoListByUserId($userId);
+
+    /**
+     * @param $videoId
+     * @return $videoMessage
+     */
+    public function findVideoMessageByVideoId($videoId);
+
+    /**
+     * @param $userId
+     * @param $coverName
+     * @param $covertmp
+     * @param $videoName
+     * @param $videotmp
      * @param $label
      * @param $description
      * @param $isPrivate
-     * @return $res 实现插入
      */
-    public function insertVideo($userId, $userNameAndHeadimage, $cover, $video, $label, $description, $isPrivate);
-
-    /**
-     * @param $userId
-     * @return $videoList 视频
-     */
-    public function findVideoByUserId($userId);
-
-    /**
-     * @param $videoId '视频id'
-     * @return $videoMessage '视频信息'
-     */
-    public function findVideoByVideoId($videoId);
-
-    /**
-     * @param $userId
-     * @return $videoIdAndDescAndCreatetime 视频id和描述和上传时间
-     */
-    public function findVideoIdAndDescAndCreatetime($userId);
-
-
+    public function uploadVideo($userId, $coverName, $covertmp,
+                                $videoName, $videotmp, $label, $description, $isPrivate);
 
     /**
      * @param $videoId
-     * @return $videoLikeNumbers 视频收藏数
+     * @param $coverName
+     * @param $desc
+     * @param $tag
+     * @param $isPrivate
+     * @param $covertmp
      */
-    public function findVideoLikeNumbers($videoId);
-
-    /**
-     * @param $videoId
-     * @return $videoReplyNumbers 视频评论数
-     */
-    public function findVideoReplyNumbers($videoId);
-
-    /**
-     * @param $videoId
-     * @return $videoShareNumbers 视频分享数
-     */
-    public function findVideoShareNumbers($videoId);
-
+    public function updateVideoMessageByVideoId($videoId, $coverName, $desc, $tag, $isPrivate, $covertmp);
 
     /**
      * @param $videoId
@@ -70,19 +54,11 @@ interface VideoService
     public function deleteVideoByVideoId($videoId);
 
     /**
-     * @param $videoId
-     * @param $poster
-     * @param $desc
-     * @param $tag
-     * @param $isPrivate
-     * @return $res 编辑视频信息 封面 描述 标签 公开性
-     */
-    public function updateVideoMessageByVideoId($videoId,$poster,$desc,$tag,$isPrivate);
-
-    /**
      * @param $keyWord
      * @param $userId
      * @return $videoList '通过关键字筛选后的video数组 优先级 1.标签 2.描述'
      */
     public function findVideoListByKeyWord($keyWord, $userId);
+
+
 }

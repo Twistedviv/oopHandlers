@@ -6,6 +6,102 @@ use app\Common\DB;
 
 class UserDaoImpl
 {
+    //DB对象实例化
+    private $db;
+    function __construct(){
+        $this->db=new DB();
+    }
+
+    /**
+     * @param $userId
+     * @return $fanListLevelA
+     */
+    public function findFanListLevelA($userId){
+        $sql = "select ums_invite.*,uu.uname,uu.utel,uu.headimage_url,uu.create_time ,urn.name from ums_invite
+            left join ums_user uu on ums_invite.user_id = uu.id
+            left join ums_real_name urn on ums_invite.user_id = urn.user_id
+            where ums_invite.up_user_id_1 = $userId";
+        $fanListLevelA=$this->db->execQuery($sql);
+        return $fanListLevelA;
+    }
+
+    /**
+     * @param $userId
+     * @return $fanListLevelB
+     */
+    public function findFanListLevelB($userId){
+        $sql = "select ums_invite.*,uu.uname,uu.utel,uu.headimage_url,uu.create_time ,urn.name from ums_invite
+            left join ums_user uu on ums_invite.user_id = uu.id
+            left join ums_real_name urn on ums_invite.user_id = urn.user_id
+            where ums_invite.up_user_id_2 = $userId";
+        $fanListLevelB=$this->db->execQuery($sql);
+        return $fanListLevelB;
+    }
+
+    /**
+     * @param $userId
+     * @return $vipListLevelA
+     */
+    public function findVipListLevelA($userId){
+        $sql = "select ums_invite.*,uu.uname,uu.utel,uu.headimage_url,uu.create_time ,urn.name from ums_invite
+            left join ums_user uu on ums_invite.user_id = uu.id
+            left join ums_real_name urn on ums_invite.user_id = urn.user_id
+            where ums_invite.up_user_id_1 = $userId and uu.is_vip <> 0";
+        $vipListLevelA=$this->db->execQuery($sql);
+        return $vipListLevelA;
+    }
+
+    /**
+     * @param $userId
+     * @return $vipListLevelB
+     */
+    public function findVipListLevelB($userId){
+        $sql = "select ums_invite.*,uu.uname,uu.utel,uu.headimage_url,uu.create_time ,urn.name from ums_invite
+            left join ums_user uu on ums_invite.user_id = uu.id
+            left join ums_real_name urn on ums_invite.user_id = urn.user_id
+            where ums_invite.up_user_id_2 = $userId and uu.is_vip <> 0";
+        $vipListLevelB=$this->db ->execQuery($sql);
+        return $vipListLevelB;
+    }
+
+    /**
+     * @param $userId
+     * @return $partnerListLevelA
+     */
+    public function findPartnerListLevelA($userId){
+        $sql = "select ums_partner.*,uu.uname,uu.utel,uu.headimage_url,uu.create_time ,urn.name from ums_partner
+            left join ums_user uu on ums_partner.user_id = uu.id
+            left join ums_real_name urn on ums_partner.user_id = urn.user_id
+            where ums_partner.uppartner_id_1 = $userId";
+        $partnerListLevelA=$this->db ->execQuery($sql);
+        return $partnerListLevelA;
+    }
+
+    /**
+     * @param $userId
+     * @return $partnerListLevelB
+     */
+    public function findPartnerListLevelB($userId){
+        $sql = "select ums_partner.*,uu.uname,uu.utel,uu.headimage_url,uu.create_time ,urn.name from ums_partner
+            left join ums_user uu on ums_partner.user_id = uu.id
+            left join ums_real_name urn on ums_partner.user_id = urn.user_id
+            where ums_partner.uppartner_id_2 = $userId";
+        $partnerListLevelB=$this->db ->execQuery($sql);
+        return $partnerListLevelB;
+    }
+
+    /**
+     * @param $userId
+     * @return $partnerListLevelB
+     */
+    public function findPartnerListLevelC($userId){
+        $sql = "select ums_partner.*,uu.uname,uu.utel,uu.headimage_url,uu.create_time ,urn.name from ums_partner
+            left join ums_user uu on ums_partner.user_id = uu.id
+            left join ums_real_name urn on ums_partner.user_id = urn.user_id
+            where ums_partner.uppartner_id_3 = $userId";
+        $partnerListLevelC=$this->db ->execQuery($sql);
+        return $partnerListLevelC;
+    }
 
     /**
      * @param $userId
@@ -13,8 +109,7 @@ class UserDaoImpl
      */
     public function findRealMessage($userId){
         $sql="select * from ums_real_name where user_id=$userId";
-        $db = new DB();
-        $real=$db ->execQuery($sql);
+        $real=$this->db ->execQuery($sql);
         return $real;
     }
 
@@ -24,32 +119,8 @@ class UserDaoImpl
      */
     public function findUserByUserId($userId){
         $sql="select * from ums_user where id=$userId";
-        $db = new DB();
-        $user=$db ->execQuery($sql);
+        $user=$this->db ->execQuery($sql);
         return $user;
-    }
-
-
-    /**SUBSTRING(create_time, 3)
-     * @param $userId
-     * @return $userDownLevelOneList '直接邀请的用户数组'
-     */
-    public function findDownUserLevelOneIdByUserId($userId){
-        $sql="select user_id from ums_invite where ums_invite.up_user_id_1 = $userId";
-        $db = new DB();
-        $userIdList=($db ->execQuery($sql));
-        return $userIdList;
-    }
-
-    /**
-     * @param $userId
-     * @return $userDownLevelTwoList '直接邀请的直接邀请的用户数组'
-     */
-    public function findDownUserLevelTwoIdByUserId($userId){
-        $sql="select user_id from ums_invite where ums_invite.up_user_id_2 = $userId";
-        $db = new DB();
-        $userIdList=$db ->execQuery($sql);
-        return $userIdList;
     }
 
     /**
@@ -58,77 +129,18 @@ class UserDaoImpl
      */
     public function findUserNumbers($userId){
         $sql="select invite_num from ums_user where $userId=ums_user.id";
-        $db = new DB();
-        $userNumbers=$db ->execQuery($sql);
+        $userNumbers=$this->db ->execQuery($sql);
         return $userNumbers;
-    }
-
-    /**
-     * @param $userId
-     * @return $userDownLevelOneVipList
-     */
-    public function findDownVipLevelOneIdByUserId($userId){
-        $sql="select id 'user_id' from ums_user where is_vip <> 0 and id in (
-            select user_id from ums_invite where ums_invite.up_user_id_1 = $userId)";
-        $db = new DB();
-        $userIdList=$db ->execQuery($sql);
-        return $userIdList;
-    }
-
-    /**
-     * @param $userId
-     * @return $userDownLevelTwoVipList
-     */
-    public function findDownVipLevelTwoIdByUserId($userId){
-        $sql="select id 'user_id' from ums_user where is_vip <> 0 and id in (
-            select user_id from ums_invite where ums_invite.up_user_id_2 = $userId)";
-        $db = new DB();
-        $userIdList=$db ->execQuery($sql);
-        return $userIdList;
-    }
-
-    /**
-     * @param $userId
-     * @return $myDownPartnerFirstList '自己下方各分支的第一个合伙人数组'
-     */
-    public function findMyDownPartnerFirstIdList($userId){
-        $sql="select user_id from ums_partner where uppartner_id_1 = $userId";
-        $db = new DB();
-        $userIdList=$db ->execQuery($sql);
-        return $userIdList;
-    }
-
-    /**
-     * @param $userId
-     * @return $partnerADownPartnerFirstList '合伙人A下方各分支的第一个合伙人数组'
-     */
-    public function findPartnerADownPartnerFirstIdList($userId){
-        $sql="select user_id from ums_partner where uppartner_id_2 = $userId";
-        $db = new DB();
-        $userIdList=$db ->execQuery($sql);
-        return $userIdList;
-    }
-
-    /**
-     * @param $userId
-     * @return $partnerBDownPartnerFirstList '合伙人B下方各分支的第一个合伙人数组'
-     */
-    public function findPartnerBDownPartnerFirstIdList($userId){
-        $sql="select user_id from ums_partner where uppartner_id_3 = $userId";
-        $db = new DB();
-        $userIdList=$db ->execQuery($sql);
-        return $userIdList;
     }
 
     /**
      * @param $userId
      * @return $topPartnerDownNumbersList '创始合伙人下各分支合伙人数组'
      */
-    public function findTopPartnerDownNumbersList($userId){
+    public function findTopPartnerList($userId){
         $sql="select * from ums_partner where top_partner_id=$userId";
-        $db = new DB();
-        $topPartnerDownNumbersList=$db ->execQuery($sql);
-        return $topPartnerDownNumbersList;
+        $topPartner=$this->db ->execQuery($sql);
+        return $topPartner;
     }
 
     /**
@@ -136,8 +148,7 @@ class UserDaoImpl
      */
     public function findNewVip(){
         $sql="select user_id,create_time from ums_vip where DATE_SUB(CURDATE(), INTERVAL 1 MONTH) <= date(create_time)";
-        $db = new DB();
-        $newVip=$db ->execQuery($sql);
+        $newVip=$this->db ->execQuery($sql);
         return $newVip;
     }
 
@@ -146,8 +157,7 @@ class UserDaoImpl
      */
     public function findNewPartner(){
         $sql="select user_id,create_time from ums_partner where DATE_SUB(CURDATE(), INTERVAL 1 MONTH) <= date(create_time)";
-        $db = new DB();
-        $newPartner=$db ->execQuery($sql);
+        $newPartner=$this->db ->execQuery($sql);
         return $newPartner;
     }
 
@@ -156,8 +166,7 @@ class UserDaoImpl
      */
     public function findNewLucky(){
         $sql="select uid,drawtime from tbl_lottery where DATE_SUB(CURDATE(), INTERVAL 1 MONTH) <= date(drawtime)";
-        $db = new DB();
-        $newLucky=$db ->execQuery($sql);
+        $newLucky=$this->db ->execQuery($sql);
         return $newLucky;
     }
 
@@ -167,8 +176,7 @@ class UserDaoImpl
      */
     public function findLuckyUserDataByUserId($userId){
         $sql="select * from tbl_drawlottery where uid=$userId";
-        $db = new DB();
-        $luckyUserData=$db ->execQuery($sql);
+        $luckyUserData=$this->db ->execQuery($sql);
         return $luckyUserData;
     }
 
@@ -183,8 +191,7 @@ class UserDaoImpl
     public function addUserReceiveAddress($userId, $name, $phone, $site, $isDefault){
         $sql="insert into ums_address(user_id,name,phone,site,is_default,delete_status) values (
               '$userId','$name','$phone','$site','$isDefault','0')";
-        $db = new DB();
-        $res=$db ->execUpdateWithLastId($sql);
+        $res=$this->db ->execUpdateWithLastId($sql);
         return $res;
     }
 
@@ -195,11 +202,10 @@ class UserDaoImpl
      */
     public function UpdateAddressIdByUserId($userId,$addressId){
         //获取addressId
-        $db = new DB();
         $sql="UPDATE ums_user SET address_id=$addressId where $userId=id";
-        $db ->execUpdate($sql);
+        $this->db ->execUpdate($sql);
         $sql="UPDATE ums_address SET is_default=0 where $userId=user_id and id <> $addressId";
-        $db ->execUpdate($sql);
+        $this->db ->execUpdate($sql);
     }
 
     /**
@@ -208,8 +214,7 @@ class UserDaoImpl
      */
     public function findUserReceiveAddress($userId){
         $sql="select * from ums_address where user_id=$userId and delete_status = 0";
-        $db = new DB();
-        $userReceiveAddress=$db ->execQuery($sql);
+        $userReceiveAddress=$this->db ->execQuery($sql);
         return $userReceiveAddress;
     }
 
@@ -219,8 +224,7 @@ class UserDaoImpl
      */
     public function deleteUserReceiveAddressByAddressId($addressId){
         $sql="UPDATE ums_address SET delete_status=1 where $addressId=id";
-        $db = new DB();
-        $res=$db ->execUpdate($sql);
+        $res=$this->db ->execUpdate($sql);
         return $res;
     }
 
@@ -235,8 +239,7 @@ class UserDaoImpl
     public function updateUserReceiveAddressByAddressId
         ($addressId,$name,$phone,$site,$isDefault){
         $sql="UPDATE ums_address SET name='$name' , phone='$phone',site='$site',is_default='$isDefault'  where $addressId=id";
-        $db = new DB();
-        $res=$db ->execUpdate($sql);
+        $res=$this->db ->execUpdate($sql);
         return $res;
     }
 }

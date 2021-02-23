@@ -9,14 +9,20 @@ use app\Common\DB;
 
 class MessageDaoImpl
 {
+
+    //DB对象实例化
+    private $db;
+    function __construct(){
+        $this->db=new DB();
+    }
+    
     /**
      * @param $userId
      * @return $notice 信息
      */
     public function findNoticeByUserId($userId){
         $sql="select * from mms_notice where receive_id=$userId";
-        $db = new DB();
-        $notice=$db ->execQuery($sql);
+        $notice=$this->db ->execQuery($sql);
         return $notice;
     }
 
@@ -26,8 +32,7 @@ class MessageDaoImpl
      */
     public function findContentByNoticeId($noticeId){
         $sql="select * from mms_notice_content where id=$noticeId";
-        $db = new DB();
-        $content=$db ->execQuery($sql);
+        $content=$this->db ->execQuery($sql);
         return $content;
     }
 
@@ -37,8 +42,7 @@ class MessageDaoImpl
      */
     public function updateCheckedStatusById($Id){
         $sql="UPDATE mms_notice SET checked_status = 1 where $Id=id";
-        $db = new DB();
-        $res=$db ->execUpdate($sql);
+        $res=$this->db ->execUpdate($sql);
         return $res;
     }
 }

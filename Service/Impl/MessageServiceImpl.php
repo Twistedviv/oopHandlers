@@ -12,16 +12,22 @@ use app\Dao\Impl\MessageDaoImpl;
 
 class MessageServiceImpl implements MessageService
 {
+    //dao层对象实例化
+    private $messageDao;
+    function __construct(){
+        $this->messageDao=new MessageDaoImpl();
+    }
+
     /**
      * @param $userId
      * @return $contentList 站内信 消息列表
      */
     public function findNoticeListByUserId($userId){
         $noticeList=array();
-        $notice=(new MessageDaoImpl())->findNoticeByUserId($userId);
+        $notice=$this->messageDao->findNoticeByUserId($userId);
         for($i=0;$i<count($notice);$i++){
             $noticeId=$notice[$i]['notice_content_id'];
-            $content=(new MessageDaoImpl())->findContentByNoticeId($noticeId);
+            $content=$this->messageDao->findContentByNoticeId($noticeId);
 
             $noticeList[$i]=array(
                 'id'=>$notice[$i]['id'],
@@ -41,7 +47,7 @@ class MessageServiceImpl implements MessageService
      * @return $res 编辑成功
      */
     public function updateCheckedStatusById($Id){
-        $res=(new MessageDaoImpl())->updateCheckedStatusById($Id);
+        $res=$this->messageDao->updateCheckedStatusById($Id);
         $result = new Result(1,'编辑成功',$res);
         return $result->send();
     }

@@ -11,125 +11,132 @@ use app\Dao\Impl\UserDaoImpl;
 
 class UserServiceImpl implements UserService
 {
+    //dao层对象实例化
+    private $userDao;
+    function __construct(){
+        $this->userDao=new UserDaoImpl();
+    }
 
     /**
-     * @param $idList 'id数组'
-     * @return $userList '封装用户id 头像 电话 上传时间 真实用户名'
+     * @param $userId
+     * @return $fanList '粉丝列表'
      */
-    public function encapUserList($idList){
-        $userList=array();
-        for($i=0;$i<count($idList);$i++){
-            //取得每一个id
-            $id=$idList[$i]['user_id'];
-            //获得user(*)
-            $user=(new UserDaoImpl())->findUserByUserId($id);
-            //获得用户名
-            $real=(new UserDaoImpl())->findRealMessage($id);
-            if(!empty($real)){
-                $realName=$real[0]['name'];
+    public function findFanList($userId){
+        function encap($fan){
+            $fanlist=array();
+            for($i=0;$i<count($fan);$i++){
+                if($fan[$i]['name']==null){
+                    $name=$fan[$i]['uname'];
+                }
+                else{
+                    $name=$fan[$i]['name'];
+                }
+                //封装所需数组
+                $userModel=array('id'=>$fan[$i]['user_id'],'uname'=>$name,'headimage_url'=>$fan[$i]['headimage_url'],'utel'=>$fan[$i]['utel'],
+                    'create_time'=>substr($fan[$i]['create_time'] , 0 , 10));
+                $fanlist[$i]=$userModel;
             }
-            else{
-                $realName=$user[0]['uname'];
-            }
-            //封装所需数组
-            $userModel=array('id'=>$user[0]['id'],'uname'=>$realName,'headimage_url'=>$user[0]['headimage_url'],'utel'=>$user[0]['utel'],
-                'create_time'=>substr($user[0]['create_time'] , 0 , 10));
-            $userList[$i]=$userModel;
+            return $fanlist;
         }
-        return $userList;
-    }
-
-    /**
-     * @param $userId
-     * @return $userDownLevelOneList '直接邀请的用户数组'
-     */
-    public function findDownUserLevelOne($userId){
-        $userDownLevelOneIdList=(new UserDaoImpl())->findDownUserLevelOneIdByUserId($userId);
-
-        $userDownLevelOneList=(new UserServiceImpl())->encapUserList($userDownLevelOneIdList);;
-        return $userDownLevelOneList;
-    }
-
-    /**
-     * @param $userId
-     * @return $userDownLevelTwoList '直接邀请的直接邀请的用户数组'
-     */
-    public function findDownUserLevelTwo($userId){
-        $userDownLevelTwoIdList=(new UserDaoImpl())->findDownUserLevelTwoIdByUserId($userId);
-
-        $userDownLevelTwoList=(new UserServiceImpl())->encapUserList($userDownLevelTwoIdList);
-        return $userDownLevelTwoList;
-    }
-
-    /**
-     * @param $userId
-     * @return $userNumbers '以自己为根的总数'
-     */
-    public function findUserNumbers($userId){
-        $userNumbers=(new UserDaoImpl())->findUserNumbers($userId);
+        //A层粉丝表
+        $fanListLevelA=$this->userDao->findFanListLevelA($userId);
+        $fanListLevelA=encap($fanListLevelA);
+        //B层粉丝表
+        $fanListLevelB=$this->userDao->findFanListLevelB($userId);
+        $fanListLevelB=encap($fanListLevelB);
+        //总数
+        $userNumbers=$this->userDao->findUserNumbers($userId);
         $total=$userNumbers[0]['invite_num'];
-        return $total;
+        //粉丝A数
+        $ANum=count($fanListLevelA);
+        //粉丝B数
+        $BNum=count($fanListLevelB);
+        //总数-粉丝A数-粉丝B数
+        $fanMoreNum=$total-$ANum-$BNum;
+
+        $userDownList=array('levelA'=>$fanListLevelA,'levelB'=>$fanListLevelB,'more'=>$fanMoreNum);
+        $result = new Result(1,'请求成功',$userDownList);
+        return $result->send();
     }
 
     /**
      * @param $userId
-     * @return $userDownLevelOneVipList '以自己为根的总数 数组'
+     * @return $vipList 'vip列表'
      */
-    public function findDownVipLevelOne($userId){
-        $userDownLevelOneVipIdList=(new UserDaoImpl())->findDownVipLevelOneIdByUserId($userId);
+    public function findVipList($userId){
+        function encap($vip){
+            $viplist=array();
+            for($i=0;$i<count($vip);$i++){
+                if($vip[$i]['name']==null){
+                    $name=$vip[$i]['uname'];
+                }
+                else{
+                    $name=$vip[$i]['name'];
+                }
+                //封装所需数组
+                $userModel=array('id'=>$vip[$i]['user_id'],'uname'=>$name,'headimage_url'=>$vip[$i]['headimage_url'],'utel'=>$vip[$i]['utel'],
+                    'create_time'=>substr($vip[$i]['create_time'] , 0 , 10));
+                $viplist[$i]=$userModel;
+            }
+            return $viplist;
+        }
+        //vipA表
+        $vipListLevelA=$this->userDao->findVipListLevelA($userId);
+        $vipListLevelA=encap($vipListLevelA);
+        //vipB表
+        $vipListLevelB=$this->userDao->findVipListLevelB($userId);
+        $vipListLevelB=encap($vipListLevelB);
 
-        $userDownLevelOneVipList=(new UserServiceImpl())->encapUserList($userDownLevelOneVipIdList);
-        return $userDownLevelOneVipList;
+        $userDownList=array('levelA'=>$vipListLevelA,'levelB'=>$vipListLevelB);
+        $result = new Result(1,'请求成功',$userDownList);
+        return $result->send();
     }
 
     /**
      * @param $userId
-     * @return $userDownLevelTwoVipList '直接邀请的直接邀请的vip数组'
+     * @return $partnerList 'partner列表'
      */
-    public function findDownVipLevelTwo($userId){
-        $userDownLevelTwoVipIdList=(new UserDaoImpl())->findDownVipLevelTwoIdByUserId($userId);
-        $userDownLevelTwoVipList=(new UserServiceImpl())->encapUserList($userDownLevelTwoVipIdList);
-        return $userDownLevelTwoVipList;
-    }
+    public function findPartnerList($userId){
+        function encap($partner){
+            $partnerlist=array();
+            for($i=0;$i<count($partner);$i++){
+                if($partner[$i]['name']==null){
+                    $name=$partner[$i]['uname'];
+                }
+                else{
+                    $name=$partner[$i]['name'];
+                }
+                //封装所需数组
+                $userModel=array('id'=>$partner[$i]['user_id'],'uname'=>$name,'headimage_url'=>$partner[$i]['headimage_url'],'utel'=>$partner[$i]['utel'],
+                    'create_time'=>substr($partner[$i]['create_time'] , 0 , 10));
+                $partnerlist[$i]=$userModel;
+            }
+            return $partnerlist;
+        }
+        //partnerA表
+        $partnerListLevelA=$this->userDao->findPartnerListLevelA($userId);
+        $partnerListLevelA=encap($partnerListLevelA);
+        //partnerB表
+        $partnerListLevelB=$this->userDao->findPartnerListLevelB($userId);
+        $partnerListLevelB=encap($partnerListLevelB);
+        //partnerC表
+        $partnerListLevelC=$this->userDao->findPartnerListLevelC($userId);
+        $partnerListLevelC=encap($partnerListLevelC);
+        //总数
+        $topList=$this->userDao->findTopPartnerList($userId);
+        $total=count($topList);
+        //partnerA数
+        $ANum=count($partnerListLevelA);
+        //partnerB数
+        $BNum=count($partnerListLevelB);
+        //partnerC数
+        $CNum=count($partnerListLevelC);
+        $partnerMoreNum=$total-$ANum-$BNum-$CNum;
 
-    /**
-     * @param $userId
-     * @return $myDownPartnerFirstList '自己下方各分支的第一个合伙人数组'
-     */
-    public function findMyDownPartnerFirst($userId){
-        $myDownPartnerFirstIdList=(new UserDaoImpl())->findMyDownPartnerFirstIdList($userId);
-        $myDownPartnerFirstList=(new UserServiceImpl())->encapUserList($myDownPartnerFirstIdList);
-        return $myDownPartnerFirstList;
-    }
-
-    /**
-     * @param $userId
-     * @return $partnerADownPartnerFirstList '合伙人A下方各分支的第一个合伙人数组'
-     */
-    public function findPartnerADownPartnerFirst($userId){
-        $partnerADownPartnerFirstIdList=(new UserDaoImpl())->findPartnerADownPartnerFirstIdList($userId);
-        $partnerADownPartnerFirstList=(new UserServiceImpl())->encapUserList($partnerADownPartnerFirstIdList);
-        return $partnerADownPartnerFirstList;
-    }
-
-    /**
-     * @param $userId
-     * @return $partnerADownPartnerFirstList '合伙人B下方各分支的第一个合伙人数组'
-     */
-    public function findPartnerBDownPartnerFirst($userId){
-        $partnerBDownPartnerFirstIdList=(new UserDaoImpl())->findPartnerBDownPartnerFirstIdList($userId);
-        $partnerBDownPartnerFirstList=(new UserServiceImpl())->encapUserList($partnerBDownPartnerFirstIdList);
-        return $partnerBDownPartnerFirstList;
-    }
-
-    /**
-     * @param $userId
-     * @return $topPartnerDownNumbers '创始合伙人下各分支总数'
-     */
-    public function findTopPartnerDownNumbers($userId){
-        $topPartnerDownNumbersList=(new UserDaoImpl())->findTopPartnerDownNumbersList($userId);
-        $topPartnerDownNumbers=count($topPartnerDownNumbersList);
-        return $topPartnerDownNumbers;
+        $partner=array('levelA'=>$partnerListLevelA,'levelB'=>$partnerListLevelB,
+            'levelC'=>$partnerListLevelC,'more'=>$partnerMoreNum);
+        $result = new Result(1,'请求成功',$partner);
+        return $result->send();
     }
 
     /**
@@ -137,14 +144,13 @@ class UserServiceImpl implements UserService
      */
     public function findNewVipList(){
         $userList=array();
-        $vipIdAndTime=(new UserDaoImpl())->findNewVip();
-//        $count = count($vipIdAndTime);
+        $vipIdAndTime=$this->userDao->findNewVip();
         $count = 30;
         for($i=0;$i<$count;$i++){
             $id=$vipIdAndTime[$i]['user_id'];
             $create_time=$vipIdAndTime[$i]['create_time'];
-            $user=(new UserDaoImpl())->findUserByUserId($id);
-            $real=(new UserDaoImpl())->findRealMessage($id);
+            $user=$this->userDao->findUserByUserId($id);
+            $real=$this->userDao->findRealMessage($id);
             if(!empty($real)){
                 $realName=$real[0]['name'];
             }
@@ -166,14 +172,14 @@ class UserServiceImpl implements UserService
      */
     public function findNewPartnerList(){
         $userList=array();
-        $partnerIdAndTime=(new UserDaoImpl())->findNewPartner();
+        $partnerIdAndTime=$this->userDao->findNewPartner();
 //        $count = count($partnerIdAndTime);
         $count = 30;
         for($i=0;$i<$count;$i++){
             $id=$partnerIdAndTime[$i]['user_id'];
             $create_time=$partnerIdAndTime[$i]['create_time'];
-            $user=(new UserDaoImpl())->findUserByUserId($id);
-            $real=(new UserDaoImpl())->findRealMessage($id);
+            $user=$this->userDao->findUserByUserId($id);
+            $real=$this->userDao->findRealMessage($id);
             if(!empty($real)){
                 $realName=$real[0]['name'];
             }
@@ -196,14 +202,14 @@ class UserServiceImpl implements UserService
      */
     public function findNewLuckyList(){
         $luckyList=array();
-        $luckyIdAndTime=(new UserDaoImpl())->findNewLucky();
+        $luckyIdAndTime=$this->userDao->findNewLucky();
 //        $count = count($luckyIdAndTime);
         $count = 30;
         for($i=0;$i<$count;$i++){
             $id=$luckyIdAndTime[$i]['uid'];
             $drawtime=$luckyIdAndTime[$i]['drawtime'];
-            $user=(new UserDaoImpl())->findUserByUserId($id);
-            $luckyUserData=(new UserDaoImpl())->findLuckyUserDataByUserId($id);
+            $user=$this->userDao->findUserByUserId($id);
+            $luckyUserData=$this->userDao->findLuckyUserDataByUserId($id);
             $levelName = ['一等奖','二等奖'];
             //整理内容
             $content = "恭喜".$user[0]['uname']."获得".$levelName[$luckyUserData[0]['level']-1];
@@ -254,11 +260,11 @@ class UserServiceImpl implements UserService
         }
         if($error==0){
             //实现插入数据
-            $re=(new UserDaoImpl())->addUserReceiveAddress($userId, $name, $phone, $site, $isDefault);
+            $re=$this->userDao->addUserReceiveAddress($userId, $name, $phone, $site, $isDefault);
             //更新user表中默认收获地址
             if($isDefault==1){
                 $addressId=$re['id'];
-                (new UserDaoImpl())->UpdateAddressIdByUserId($userId,$addressId);
+                $this->userDao->UpdateAddressIdByUserId($userId,$addressId);
             }
             if($re){
                 $result = new Result(0,'数据插入成功','数据插入成功');
@@ -276,7 +282,7 @@ class UserServiceImpl implements UserService
      */
     public function findUserReceiveAddress($userId){
         $userReceiveAddressList=array();
-        $userReceiveAddress=(new UserDaoImpl())->findUserReceiveAddress($userId);
+        $userReceiveAddress=$this->userDao->findUserReceiveAddress($userId);
         for($i=0;$i<count($userReceiveAddress);$i++){
             $userReceiveAddressList[$i]=array(
                 'id'=> $userReceiveAddress[$i]['id'],
@@ -296,7 +302,7 @@ class UserServiceImpl implements UserService
      * @return $res
      */
     public function deleteUserReceiveAddressByAddressId($addressId){
-        $res=(new UserDaoImpl())->deleteUserReceiveAddressByAddressId($addressId);
+        $res=$this->userDao->deleteUserReceiveAddressByAddressId($addressId);
         $result = new Result(0,'删除成功',$res);
         return $result->send();
     }
@@ -339,11 +345,11 @@ class UserServiceImpl implements UserService
             $error=1;
         }
         if($error==0){
-            $res=(new UserDaoImpl())->updateUserReceiveAddressByAddressId
+            $res=$this->userDao->updateUserReceiveAddressByAddressId
             ($addressId,$name,$phone,$site,$isDefault);
             //更新user表中默认收获地址
             if($isDefault==1){
-                (new UserDaoImpl())->UpdateAddressIdByUserId($userId,$addressId);
+                $this->userDao->UpdateAddressIdByUserId($userId,$addressId);
             }
             $result = new Result(0,'编辑成功',$res);
 

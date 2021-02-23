@@ -6,64 +6,22 @@ namespace app\Service;
 interface UserService
 {
     /**
-     * @param $idList 'id数组'
-     * @return $userList '封装用户id 头像 电话 上传时间 真实用户名'
+     * @param $userId
+     * @return $fanList '粉丝列表'
      */
-    public function encapUserList($idList);
+    public function findFanList($userId);
 
     /**
      * @param $userId
-     * @return $userDownLevelOneList '直接邀请的用户数组'
+     * @return $vipList 'vip列表'
      */
-    public function findDownUserLevelOne($userId);
+    public function findVipList($userId);
 
     /**
      * @param $userId
-     * @return $userDownLevelTwoList '直接邀请的直接邀请的用户数组'
+     * @return $partnerList 'partner列表'
      */
-    public function findDownUserLevelTwo($userId);
-
-    /**
-     * @param $userId
-     * @return $userNumbers '以自己为根的总数'
-     */
-    public function findUserNumbers($userId);
-
-    /**
-     * @param $userId
-     * @return $userDownVipLevelOneList '直接邀请的vip数组'
-     */
-    public function findDownVipLevelOne($userId);
-
-    /**
-     * @param $userId
-     * @return $userDownVipLevelTwoList '直接邀请的直接邀请的vip数组'
-     */
-    public function findDownVipLevelTwo($userId);
-
-    /**
-     * @param $userId
-     * @return $myDownPartnerFirstList '自己下方各分支的第一个合伙人数组'
-     */
-    public function findMyDownPartnerFirst($userId);
-
-    /**
-     * @param $userId
-     * @return $partnerADownPartnerFirstList '合伙人A下方各分支的第一个合伙人数组'
-     */
-    public function findPartnerADownPartnerFirst($userId);
-
-    /**
-     * @param $userId
-     * @return $partnerBDownPartnerFirstList '合伙人B下方各分支的第一个合伙人数组'
-     */
-    public function findPartnerBDownPartnerFirst($userId);
-
-    /**
-     * @param $userId
-     * @return $topPartnerDownNumbers '创始合伙人下各分支总数'
-     */
-    public function findTopPartnerDownNumbers($userId);
+    public function findPartnerList($userId);
 
     /**
      * @return $newVipList ‘JSON化’
@@ -79,6 +37,41 @@ interface UserService
      * @return $newLuckyList ‘JSON化’
      */
     public function findNewLuckyList();
+
+    /**
+     * @param $userId
+     * @param $name
+     * @param $phone
+     * @param $site
+     * @param $isDefault
+     * @return $result '实现数据插入反馈操作结果'
+     */
+    public function addUserReceiveAddress($userId, $name, $phone, $site, $isDefault);
+
+    /**
+     * @param $userId
+     * @return $userReceiveAddressList '收货地址列表'
+     */
+    public function findUserReceiveAddress($userId);
+
+    /**
+     * @param $addressId
+     * @return $res
+     */
+    public function deleteUserReceiveAddressByAddressId($addressId);
+
+    /**
+     * @param $addressId
+     * @param $name
+     * @param $phone
+     * @param $site
+     * @param $userId
+     * @param $isDefault
+     * @return $res
+     */
+    public function updateUserReceiveAddressByAddressId($addressId,$userId, $name, $phone, $site, $isDefault);
+
+
 
 
 
