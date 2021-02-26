@@ -8,7 +8,7 @@ interface ProfitService
 {
 
     /**
-     * @param $partnerId  合伙人id
+     * @param $partnerId
      * @return $profitList {
             vipFee: {
      *          profitNumber,
@@ -28,7 +28,7 @@ interface ProfitService
 
 
     /**
-     * @param $partnerId  合伙人id
+     * @param $partnerId
      * @return $vipFeeProfit {
             summary: {
      *          sum,
@@ -44,6 +44,10 @@ interface ProfitService
      */
     public function findVipFeeProfit($partnerId);
 
+    /**
+     * @param $partnerId
+     * @return $codeFeeProfit
+     */
     public function findCodeFeeProfit($partnerId);
 
     public function findProductProfit($partnerId);
