@@ -162,22 +162,16 @@ class UserDaoImpl
     }
 
     /**
-     *return $newLucky
+     * @return $newLuckyData
      */
-    public function findNewLucky(){
-        $sql="select uid,drawtime from tbl_lottery where DATE_SUB(CURDATE(), INTERVAL 1 MONTH) <= date(drawtime)";
-        $newLucky=$this->db ->execQuery($sql);
-        return $newLucky;
-    }
-
-    /**
-     * @param $userId
-     * return $luckyUserData
-     */
-    public function findLuckyUserDataByUserId($userId){
-        $sql="select * from tbl_drawlottery where uid=$userId";
-        $luckyUserData=$this->db ->execQuery($sql);
-        return $luckyUserData;
+    public function findNewLuckyData(){
+        $sql="SELECT tbl_drawlottery.uid,tbl_drawlottery.level,uu.uname,uu.headimage_url,lla.result_time
+                from tbl_drawlottery 
+                left join lms_lottery_activity lla on tbl_drawlottery.period=lla.id
+                left join ums_user uu on tbl_drawlottery.uid=uu.id
+                order by tbl_drawlottery.period desc limit 0,30";
+        $newLuckyData=$this->db ->execQuery($sql);
+        return $newLuckyData;
     }
 
     /**

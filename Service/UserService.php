@@ -34,7 +34,7 @@ interface UserService
     public function findNewPartnerList();
 
     /**
-     * @return $newLuckyList ‘JSON化’
+     * @return $Lucky ‘JSON化’
      */
     public function findNewLuckyList();
 

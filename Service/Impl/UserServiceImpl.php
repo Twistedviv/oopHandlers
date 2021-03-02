@@ -198,27 +198,21 @@ class UserServiceImpl implements UserService
     }
 
     /**
-     * @return $newLuckyList ‘JSON化’
+     * @return $Lucky ‘JSON化’
      */
     public function findNewLuckyList(){
-        $luckyList=array();
-        $luckyIdAndTime=$this->userDao->findNewLucky();
-//        $count = count($luckyIdAndTime);
-        $count = 30;
-        for($i=0;$i<$count;$i++){
-            $id=$luckyIdAndTime[$i]['uid'];
-            $drawtime=$luckyIdAndTime[$i]['drawtime'];
-            $user=$this->userDao->findUserByUserId($id);
-            $luckyUserData=$this->userDao->findLuckyUserDataByUserId($id);
+        $lucky=array();
+        $luckyList=$this->userDao->findNewLuckyData();
+        for($i=0;$i<count($luckyList);$i++){
             $levelName = ['一等奖','二等奖'];
             //整理内容
-            $content = "恭喜".$user[0]['uname']."获得".$levelName[$luckyUserData[0]['level']-1];
+            $content = "恭喜".$luckyList[$i]['uname']."获得".$levelName[($luckyList[$i]['level']-1)];
             //封装所需数组
-            $userModel=array('id'=>$user[0]['id'],'uname'=>$user[0]['uname'],'headimage'=>$user[0]['headimage_url'],
-                'level'=>$luckyUserData[0]['level'],'content'=>$content,'regtime'=>substr($drawtime, 0 , 16));
-            $luckyList[$i]=$userModel;
+            $userModel=array('id'=>$luckyList[$i]['uid'],'uname'=>$luckyList[$i]['uname'],'headimage'=>$luckyList[$i]['headimage_url'],
+                'level'=>$luckyList[$i]['level'],'content'=>$content,'regtime'=>substr($luckyList[$i]['result_time'], 0 , 16));
+            $lucky[$i]=$userModel;
         }
-        $result = new Result(1,'请求成功',$luckyList);
+        $result = new Result(1,'请求成功',$lucky);
         return $result->send();
     }
 
