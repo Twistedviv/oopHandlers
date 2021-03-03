@@ -24,7 +24,7 @@ class VideoServiceImpl implements VideoService
      * @param $userId
      * @return $videoData
      */
-    public function findVideoDataByUserId($userId){
+    public function findVideoData($userId){
         //通过userId获取每个视频的id和描述
         $videoIdAndDesc=$this->videoDao->findVideoIdAndDescAndCreatetime($userId);
         $videoNumbers=count($videoIdAndDesc);
@@ -71,7 +71,7 @@ class VideoServiceImpl implements VideoService
      * @param $videoId
      * @return $videoMessage
      */
-    public function findVideoMessageByVideoId($videoId){
+    public function findVideoMessage($videoId){
         $video=$this->videoDao->findVideoByVideoId($videoId);
         $videoMessage=array('video_tag'=>$video[0]['video_tag'],'video_desc'=>$video[0]['video_desc'],'video_poster_url'=>$video[0]['video_poster_url'],
             'is_private'=>$video[0]['is_private']);
@@ -138,7 +138,7 @@ class VideoServiceImpl implements VideoService
      * @param $isPrivate
      * @param $covertmp
      */
-    public function updateVideoMessageByVideoId($videoId, $coverName, $desc, $tag, $isPrivate, $covertmp){
+    public function updateVideoMessage($videoId, $coverName, $desc, $tag, $isPrivate, $covertmp){
         //查找userId
         $video=$this->videoDao->findVideoByVideoId($videoId);
         $userId=$video[0]['user_id'];
@@ -160,7 +160,7 @@ class VideoServiceImpl implements VideoService
      * @param $videoId
      * @return $res 更改video表delete字段值为1
      */
-    public function deleteVideoByVideoId($videoId){
+    public function deleteVideo($videoId){
         $res=$this->videoDao->deleteVideoByVideoId($videoId);
         $result = new Result(1,'删除成功',$res);
         return $result;

@@ -4,5 +4,5 @@
     use app\Service\Impl\VideoServiceImpl;
 
     $videoId=$_GET['videoId'];
-    $videoMessage=(new VideoServiceImpl)->findVideoMessageByVideoId($videoId);
+    $videoMessage=(new VideoServiceImpl)->findVideoMessage($videoId);
     echo $videoMessage;

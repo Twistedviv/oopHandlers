@@ -9,33 +9,41 @@ use app\Common\DB;
 
 class ProfitDaoImpl
 {
+
+    /**
+     * 注解
+     * 'CM':Current Month 本月
+     * 'LM':Last Month  上月
+     * 'Three':levelABC  合伙人ABC三个层级总和
+     * 'More':创始合伙人下的受益
+     */
+
     //DB对象实例化
     private $db;
     function __construct(){
         $this->db=new DB();
     }
-
     /**
      * @param $partnerId
-     * @return $vip
+     * @return $vipProfit ‘vip总收益model’
      */
-    public function findVip($partnerId){
+    public function findVipProfit($partnerId){
         $sql = "select * from bms_vip_profit where $partnerId=partner_id 
                                and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)";
-        $vip=$this->db->execQuery($sql);
-        return $vip;
+        $vipProfit=$this->db->execQuery($sql);
+        return $vipProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $vipCurrent
+     * @return $vipCMProfit ‘vip本月收益model’
      */
-    public function findVipCurrent($partnerId){
+    public function findVipCMProfit($partnerId){
         $sql = "select * from bms_vip_profit where $partnerId=partner_id 
                               and DATE_FORMAT(create_time,'%Y%m')=DATE_FORMAT(CURDATE( ),'%Y%m')
                               and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)";
-        $vipCurrent=$this->db->execQuery($sql);
-        return $vipCurrent;
+        $vipCMProfit=$this->db->execQuery($sql);
+        return $vipCMProfit;
     }
 
     /**
@@ -50,67 +58,67 @@ class ProfitDaoImpl
 
     /**
      * @param $partnerId
-     * @return $levelABC
+     * @return $threeProfit '合伙人ABC三层级下的总收益model'
      */
-    public function findlevelABC($partnerId){
+    public function findThreeProfit($partnerId){
         $sql = "select * from bms_code_profit where DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)
                                 and ($partnerId=profited_partner_id_1 or 
                                 $partnerId=profited_partner_id_2 or
                                 $partnerId=profited_partner_id_3)";
-        $levelABC=$this->db->execQuery($sql);
-        return $levelABC;
+        $threeProfit=$this->db->execQuery($sql);
+        return $threeProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $levelABCCurrent
+     * @return $threeCMProfit ‘合伙人ABC三层级下的本月收益model’
      */
-    public function findlevelABCCurrent($partnerId){
+    public function findThreeCMProfit($partnerId){
         $sql = "select * from bms_code_profit where DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time) 
                                 and DATE_FORMAT(create_time,'%Y%m')=DATE_FORMAT(CURDATE( ),'%Y%m')
                                 and ($partnerId=profited_partner_id_1 or 
                                 $partnerId=profited_partner_id_2 or
                                 $partnerId=profited_partner_id_3)";
-        $levelABCCurrent=$this->db->execQuery($sql);
-        return $levelABCCurrent;
+        $threeCMProfit=$this->db->execQuery($sql);
+        return $threeCMProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $levelA
+     * @return $levelAProfit ‘合伙人A层级下总收益model’
      */
-    public function findlevelA($partnerId){
+    public function findlevelAProfit($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_partner_id_1 
                                 and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)";
-        $levelA=$this->db->execQuery($sql);
-        return $levelA;
+        $levelAProfit=$this->db->execQuery($sql);
+        return $levelAProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $levelB
+     * @return $levelBProfit
      */
-    public function findlevelB($partnerId){
+    public function findlevelBProfit($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_partner_id_2 
                                 and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)";
-        $levelB=$this->db->execQuery($sql);
-        return $levelB;
+        $levelBProfit=$this->db->execQuery($sql);
+        return $levelBProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $levelC
+     * @return $levelCProfit
      */
-    public function findlevelC($partnerId){
+    public function findlevelCProfit($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_partner_id_3 
                                 and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)";
-        $levelC=$this->db->execQuery($sql);
-        return $levelC;
+        $levelCProfit=$this->db->execQuery($sql);
+        return $levelCProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $more
+     * @return $more ‘创始合伙人+层级下的总收益model’
      */
     public function findMore($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_top_partner_id 
@@ -121,129 +129,129 @@ class ProfitDaoImpl
 
     /**
      * @param $partnerId
-     * @return $levelACurrent
+     * @return $levelACMProfit ‘合伙人A层级下本月收益model’
      */
-    public function findlevelACurrent($partnerId){
+    public function findlevelACMProfit($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_partner_id_1 
                                 and DATE_FORMAT(create_time,'%Y%m')=DATE_FORMAT(CURDATE( ),'%Y%m') 
                                 and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)";
-        $levelACurrent=$this->db->execQuery($sql);
-        return $levelACurrent;
+        $levelACMProfit=$this->db->execQuery($sql);
+        return $levelACMProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $levelBCurrent
+     * @return $levelBCMProfit
      */
-    public function findlevelBCurrent($partnerId){
+    public function findlevelBCMProfit($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_partner_id_2 
                                 and DATE_FORMAT(create_time,'%Y%m')=DATE_FORMAT(CURDATE( ),'%Y%m')
                                 and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)";
-        $levelBCurrent=$this->db->execQuery($sql);
-        return $levelBCurrent;
+        $levelBCMProfit=$this->db->execQuery($sql);
+        return $levelBCMProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $levelCCurrent
+     * @return $levelCCMProfit
      */
-    public function findlevelCCurrent($partnerId){
+    public function findlevelCCMProfit($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_partner_id_3 
                                 and DATE_FORMAT(create_time,'%Y%m')=DATE_FORMAT(CURDATE( ),'%Y%m')
                                 and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)";
-        $levelCCurrent=$this->db->execQuery($sql);
-        return $levelCCurrent;
+        $levelCCMProfit=$this->db->execQuery($sql);
+        return $levelCCMProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $moreCurrent
+     * @return $moreCM '创始合伙人+层级下本月收益model'
      */
-    public function findMoreCurrent($partnerId){
+    public function findMoreCM($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_top_partner_id 
                               and DATE_FORMAT(create_time,'%Y%m')=DATE_FORMAT(CURDATE( ),'%Y%m')
                               and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)";
-        $moreCurrent=$this->db->execQuery($sql);
-        return $moreCurrent;
+        $moreCM=$this->db->execQuery($sql);
+        return $moreCM;
     }
 
     /**
      * @param $partnerId
-     * @return $vipUnchecked
+     * @return $vipUncheckedProfit ‘vip未结算的收益model’
      */
-    public function findVipUnchecked($partnerId){
+    public function findVipUncheckedProfit($partnerId){
         $sql = "select * from bms_vip_profit where $partnerId=partner_id 
                                and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)
                                and checked=0";
-        $vipUnchecked=$this->db->execQuery($sql);
-        return $vipUnchecked;
+        $vipUncheckedProfit=$this->db->execQuery($sql);
+        return $vipUncheckedProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $vipLM
+     * @return $vipLMProfit ‘vip上月收益model’
      */
-    public function findVipLM($partnerId){
+    public function findVipLMProfit($partnerId){
         $sql = "select * from bms_vip_profit where $partnerId=partner_id 
                                and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)
                                and PERIOD_DIFF(date_format(CURDATE() ,'%Y%m'),date_format(create_time,'%Y%m'))=1";
-        $vipLM=$this->db->execQuery($sql);
-        return $vipLM;
+        $vipLMProfit=$this->db->execQuery($sql);
+        return $vipLMProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $codeCheckedABC
+     * @return $codeCheckedThreeProfit ‘合伙人ABC三层级下已结算的收益model’
      */
-    public function findCodeCheckedABC($partnerId){
+    public function findCodeCheckedThreeProfit($partnerId){
         $sql = "select * from bms_code_profit where  checked=1
                                and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)
                                and ($partnerId=profited_partner_id_1 or $partnerId=profited_partner_id_2
                                     or $partnerId=profited_partner_id_3)";
-        $codeCheckedABC=$this->db->execQuery($sql);
-        return $codeCheckedABC;
+        $codeCheckedThreeProfit=$this->db->execQuery($sql);
+        return $codeCheckedThreeProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $levelALM
+     * @return $levelALMProfit ‘合伙人A层级下上月收益model’
      */
-    public function findlevelALM($partnerId){
+    public function findlevelALMProfit($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_partner_id_1 
                                and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)
                                and PERIOD_DIFF(date_format(now() ,'%Y%m'),date_format(create_time,'%Y%m'))=1";
-        $levelALM=$this->db->execQuery($sql);
+        $levelALMProfit=$this->db->execQuery($sql);
 
-        return $levelALM;
+        return $levelALMProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $levelBLM
+     * @return $levelBLMProfit
      */
-    public function findlevelBLM($partnerId){
+    public function findlevelBLMProfit($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_partner_id_2 
                                and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)
                                and PERIOD_DIFF(date_format(now() ,'%Y%m'),date_format(create_time,'%Y%m'))=1";
-        $levelBLM=$this->db->execQuery($sql);
-        return $levelBLM;
+        $levelBLMProfit=$this->db->execQuery($sql);
+        return $levelBLMProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $levelCLM
+     * @return $levelCLMProfit
      */
-    public function findlevelCLM($partnerId){
+    public function findlevelCLMProfit($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_partner_id_3 
                                and DATE_SUB(CURDATE(), INTERVAL 7 DAY) > date(create_time)
                                and PERIOD_DIFF(date_format(now() ,'%Y%m'),date_format(create_time,'%Y%m'))=1";
-        $levelCLM=$this->db->execQuery($sql);
-        return $levelCLM;
+        $levelCLMProfit=$this->db->execQuery($sql);
+        return $levelCLMProfit;
     }
 
     /**
      * @param $partnerId
-     * @return $moreChecked
+     * @return $moreChecked ‘创始合伙人+层几下已结算的收益model’
      */
     public function findMoreChecked($partnerId){
         $sql = "select * from bms_code_profit where  checked=1
@@ -255,7 +263,7 @@ class ProfitDaoImpl
 
     /**
      * @param $partnerId
-     * @return $moreLM
+     * @return $moreLM ‘创始合伙人下上月的收益model’
      */
     public function findmoreLM($partnerId){
         $sql = "select * from bms_code_profit where $partnerId=profited_top_partner_id 

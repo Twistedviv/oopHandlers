@@ -295,8 +295,8 @@ class UserServiceImpl implements UserService
      * @param $addressId
      * @return $res
      */
-    public function deleteUserReceiveAddressByAddressId($addressId){
-        $res=$this->userDao->deleteUserReceiveAddressByAddressId($addressId);
+    public function deleteUserAddress($addressId){
+        $res=$this->userDao->deleteUserAddressByAddressId($addressId);
         $result = new Result(0,'删除成功',$res);
         return $result->send();
     }
@@ -310,7 +310,7 @@ class UserServiceImpl implements UserService
      * @param $isDefault
      * @return $res
      */
-    public function updateUserReceiveAddressByAddressId($addressId,$userId, $name, $phone, $site, $isDefault){
+    public function updateUserAddress($addressId,$userId, $name, $phone, $site, $isDefault){
         //定义错误变量
         $error=0;
         $result=0;

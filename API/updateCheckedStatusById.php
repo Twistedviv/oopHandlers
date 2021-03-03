@@ -5,5 +5,5 @@
 
     $Id=$_POST['noticeId'];
 
-    $res=(new MessageServiceImpl)->updateCheckedStatusById($Id);
+    $res=(new MessageServiceImpl)->updateCheckedStatus($Id);
     echo $res;

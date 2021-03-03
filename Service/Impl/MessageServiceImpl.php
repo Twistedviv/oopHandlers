@@ -22,7 +22,7 @@ class MessageServiceImpl implements MessageService
      * @param $userId
      * @return $contentList 站内信 消息列表
      */
-    public function findNoticeListByUserId($userId){
+    public function findNoticeList($userId){
         $noticeList=array();
         $notice=$this->messageDao->findNoticeByUserId($userId);
         for($i=0;$i<count($notice);$i++){
@@ -46,7 +46,7 @@ class MessageServiceImpl implements MessageService
      * @param $Id
      * @return $res 编辑成功
      */
-    public function updateCheckedStatusById($Id){
+    public function updateCheckedStatus($Id){
         $res=$this->messageDao->updateCheckedStatusById($Id);
         $result = new Result(1,'编辑成功',$res);
         return $result->send();

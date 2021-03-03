@@ -4,5 +4,5 @@
     use app\Service\Impl\VideoServiceImpl;
 
     $userId=$_GET['userId'];
-    $videoData=(new VideoServiceImpl)->findVideoDataByUserId($userId);
+    $videoData=(new VideoServiceImpl)->findVideoData($userId);
     echo $videoData;

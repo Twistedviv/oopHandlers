@@ -32,10 +32,10 @@ class ProfitServiceImpl implements ProfitService
         }
 
         //总会员费
-        $vip=$this->profitDao->findVip($partnerId);
+        $vip=$this->profitDao->findVipProfit($partnerId);
         $vipProfit=countMoney($vip);
         //本月新增会员费
-        $vipCurrent=$this->profitDao->findVipCurrent($partnerId);
+        $vipCurrent=$this->profitDao->findVipCMProfit($partnerId);
         $vipProfitCurrent=countMoney($vipCurrent);
         if($vipProfit==0){
             $vipIncrease="0.0%";
@@ -54,7 +54,7 @@ class ProfitServiceImpl implements ProfitService
         }
 
         //levelABC收益
-        $levelABC=$this->profitDao->findlevelABC($partnerId);
+        $levelABC=$this->profitDao->findThreeProfit($partnerId);
         $codeProfit=countMoney($levelABC);
 
         if($isTop==true){
@@ -65,12 +65,12 @@ class ProfitServiceImpl implements ProfitService
         }
 
         //本月新增ABC
-        $levelABCCurrent=$this->profitDao->findlevelABCCurrent($partnerId);
+        $levelABCCurrent=$this->profitDao->findThreeCMProfit($partnerId);
         $codeProfitCurrent=countMoney($levelABCCurrent);
         //本月新增more
         if($isTop==true){
             //more收益
-            $moreCurrent=$this->profitDao->findMoreCurrent($partnerId);
+            $moreCurrent=$this->profitDao->findMoreCM($partnerId);
             $moreProfitCurrent=countMoney($moreCurrent);
             $codeProfitCurrent+=$moreProfitCurrent;
         }
@@ -111,20 +111,20 @@ class ProfitServiceImpl implements ProfitService
             return $sum;
         }
         //可提现的会员费
-        $vipUnchecked=$this->profitDao->findVipUnchecked($partnerId);
+        $vipUnchecked=$this->profitDao->findVipUncheckedProfit($partnerId);
         $vipUncheckedMoney=countMoney($vipUnchecked);
         //总会员费
-        $vip=$this->profitDao->findVip($partnerId);
+        $vip=$this->profitDao->findVipProfit($partnerId);
         $vipProfit=countMoney($vip);
         //已提现的会员费
         $vipCheckedMoney=$vipProfit-$vipUncheckedMoney;
         $summary=array('sum'=>$vipProfit,'checked'=>$vipCheckedMoney,'unchecked'=>$vipUncheckedMoney);
 
         //当月会员费
-        $vipCurrent=$this->profitDao->findVipCurrent($partnerId);
+        $vipCurrent=$this->profitDao->findVipCMProfit($partnerId);
         $vipProfitCurrent=countMoney($vipCurrent);
         //上月会员费
-        $vipLM=$this->profitDao->findVipLM($partnerId);
+        $vipLM=$this->profitDao->findVipLMProfit($partnerId);
         $vipProfitLM=countMoney($vipLM);
         $detail=array('currentMonth'=>$vipProfitCurrent,'lastMonth'=>$vipProfitLM,'total'=>$vipProfit);
 
@@ -153,41 +153,41 @@ class ProfitServiceImpl implements ProfitService
         }
         //总
         //levelA收益
-        $levelA=$this->profitDao->findlevelA($partnerId);
+        $levelA=$this->profitDao->findlevelAProfit($partnerId);
         $levelAProfit=countMoney($levelA);
         //levelB收益
-        $levelB=$this->profitDao->findlevelB($partnerId);
+        $levelB=$this->profitDao->findlevelBProfit($partnerId);
         $levelBProfit=countMoney($levelB);
         //levelC收益
-        $levelC=$this->profitDao->findlevelC($partnerId);
+        $levelC=$this->profitDao->findlevelCProfit($partnerId);
         $levelCProfit=countMoney($levelC);
         //条码总收益
         $codeProfit=$levelAProfit+$levelBProfit+$levelCProfit;
 
         //已提现
-        $codeCheckedABC=$this->profitDao->findCodeCheckedABC($partnerId);
+        $codeCheckedABC=$this->profitDao->findCodeCheckedThreeProfit($partnerId);
         $codeProfitChecked=countMoney($codeCheckedABC);
 
         //本月新增
         //本月新增levelA收益
-        $levelACurrent=$this->profitDao->findlevelACurrent($partnerId);
+        $levelACurrent=$this->profitDao->findlevelACMProfit($partnerId);
         $levelAProfitCurrent=countMoney($levelACurrent);
         //本月新增levelB收益
-        $levelBCurrent=$this->profitDao->findlevelBCurrent($partnerId);
+        $levelBCurrent=$this->profitDao->findlevelBCMProfit($partnerId);
         $levelBProfitCurrent=countMoney($levelBCurrent);
         //本月新增levelC收益
-        $levelCCurrent=$this->profitDao->findlevelCCurrent($partnerId);
+        $levelCCurrent=$this->profitDao->findlevelCCMProfit($partnerId);
         $levelCProfitCurrent=countMoney($levelCCurrent);
 
         //上月累计
         //上月新增levelA收益
-        $levelALM=$this->profitDao->findlevelALM($partnerId);
+        $levelALM=$this->profitDao->findlevelALMProfit($partnerId);
         $levelAProfitLM=countMoney($levelALM);
         //上月新增levelB收益
-        $levelBLM=$this->profitDao->findlevelBLM($partnerId);
+        $levelBLM=$this->profitDao->findlevelBLMProfit($partnerId);
         $levelBProfitLM=countMoney($levelBLM);
         //上月新增levelC收益
-        $levelCLM=$this->profitDao->findlevelCLM($partnerId);
+        $levelCLM=$this->profitDao->findlevelCLMProfit($partnerId);
         $levelCProfitLM=countMoney($levelCLM);
 
         $levelA=array('currentMonth'=>$levelAProfitCurrent,
@@ -217,7 +217,7 @@ class ProfitServiceImpl implements ProfitService
             $moreProfitChecked=countMoney($moreChecked);
             $codeProfitChecked+=$moreProfitChecked;
             //more本月收益
-            $moreCurrent=$this->profitDao->findMoreCurrent($partnerId);
+            $moreCurrent=$this->profitDao->findMoreCM($partnerId);
             $moreProfitCurrent=countMoney($moreCurrent);
             //more上月收益
             $moreLM=$this->profitDao->findMoreLM($partnerId);
@@ -232,10 +232,6 @@ class ProfitServiceImpl implements ProfitService
             $result = new Result(0,'请求成功',$codeFeeProfit);
             return $result->send();
         }
-
-
-
-
     }
 
     /**

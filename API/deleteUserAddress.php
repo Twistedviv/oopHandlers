@@ -4,5 +4,5 @@
     use app\Service\Impl\UserServiceImpl;
 
     $addressId=$_POST['addressId'];
-    $result=(new UserServiceImpl)->deleteUserReceiveAddressByAddressId($addressId);
+    $result=(new UserServiceImpl)->deleteUserAddress($addressId);
     echo $result;

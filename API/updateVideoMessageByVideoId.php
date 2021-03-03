@@ -11,7 +11,7 @@
     $tag=$_POST['video_tag'];                       //标签
     $isPrivate=$_POST['video_isPrivate'];           //公开性
 
-    $result=(new VideoServiceImpl)->updateVideoMessageByVideoId($videoId,$coverName,$desc,$tag,$isPrivate,$covertmp);
+    $result=(new VideoServiceImpl)->updateVideoMessage($videoId,$coverName,$desc,$tag,$isPrivate,$covertmp);
     echo $result;
 
 

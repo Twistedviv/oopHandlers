@@ -216,7 +216,7 @@ class UserDaoImpl
      * @param $addressId
      * @return $result
      */
-    public function deleteUserReceiveAddressByAddressId($addressId){
+    public function deleteUserAddressByAddressId($addressId){
         $sql="UPDATE ums_address SET delete_status=1 where $addressId=id";
         $res=$this->db ->execUpdate($sql);
         return $res;

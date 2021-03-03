@@ -58,7 +58,7 @@ interface UserService
      * @param $addressId
      * @return $res
      */
-    public function deleteUserReceiveAddressByAddressId($addressId);
+    public function deleteUserAddress($addressId);
 
     /**
      * @param $addressId
@@ -69,7 +69,7 @@ interface UserService
      * @param $isDefault
      * @return $res
      */
-    public function updateUserReceiveAddressByAddressId($addressId,$userId, $name, $phone, $site, $isDefault);
+    public function updateUserAddress($addressId,$userId, $name, $phone, $site, $isDefault);
 
 
 

@@ -10,6 +10,6 @@
     $site=$_POST['site'];
     $isDefault=$_POST['isDefault'];
 
-    $result=(new UserServiceImpl)->updateUserReceiveAddressByAddressId($addressId,$userId,
+    $result=(new UserServiceImpl)->updateUserAddress($addressId,$userId,
     $name,$phone,$site,$isDefault);
     echo $result;

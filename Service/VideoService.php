@@ -10,7 +10,7 @@ interface VideoService
      * @param $userId
      * @return $videoData
      */
-    public function findVideoDataByUserId($userId);
+    public function findVideoData($userId);
 
     /**
      * @param $userId
@@ -22,7 +22,7 @@ interface VideoService
      * @param $videoId
      * @return $videoMessage
      */
-    public function findVideoMessageByVideoId($videoId);
+    public function findVideoMessage($videoId);
 
     /**
      * @param $userId
@@ -45,13 +45,13 @@ interface VideoService
      * @param $isPrivate
      * @param $covertmp
      */
-    public function updateVideoMessageByVideoId($videoId, $coverName, $desc, $tag, $isPrivate, $covertmp);
+    public function updateVideoMessage($videoId, $coverName, $desc, $tag, $isPrivate, $covertmp);
 
     /**
      * @param $videoId
      * @return $res 更改video表delete字段值为1
      */
-    public function deleteVideoByVideoId($videoId);
+    public function deleteVideo($videoId);
 
     /**
      * @param $keyWord

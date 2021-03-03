@@ -4,5 +4,5 @@
     use app\Service\Impl\MessageServiceImpl;
 
     $userId=$_GET['userId'];
-    $contentList=(new MessageServiceImpl)->findNoticeListByUserId($userId);
+    $contentList=(new MessageServiceImpl)->findNoticeList($userId);
     echo $contentList;
